@@ -1,0 +1,107 @@
+\documentclass{article}
+\usepackage[margin=2cm]{geometry}
+\usepackage[cmyk]{xcolor}
+\usepackage{tikz}
+\usepackage{pgf-cmykshadings}
+\usepackage{parskip}
+
+\begin{document}
+\pgfdeclarehorizontalshading{myshadingA}
+{1cm}{cmyk(0cm)=(0,1,1,0); color(2cm)=(green); color(4cm)=(blue)}
+\pgfuseshading{myshadingA}
+
+\pgfdeclarehorizontalshading[mycolor]{myshadingB}
+{1cm}{cmyk(0cm)=(0,1,1,0); color(2cm)=(mycolor)}
+\colorlet{mycolor}{green}
+\pgfuseshading{myshadingB}
+\colorlet{mycolor}{blue}
+\pgfuseshading{myshadingB}
+
+\pgfdeclareverticalshading{myshadingC}
+{4cm}{cmyk(0cm)=(0,1,1,0); cmyk(1.5cm)=(1,0,1,0); cmyk(2cm)=(1,1,0,0)}
+\pgfuseshading{myshadingC}
+
+\pgfdeclareradialshading{sphere}{\pgfpoint{0.5cm}{0.5cm}}%
+{cmyk(0cm)=(0,0.9,0.9,0);
+cmyk(0.7cm)=(0,0.7,0.7,0.3);
+cmyk(1cm)=(0,0.5,0.5,0.5);
+cmyk(1.05cm)=(0,0,0,0)}
+\pgfuseshading{sphere}
+
+\pgfdeclareverticalshading{myshadingE}{100bp}
+{color(0bp)=(red); color(25bp)=(green); color(75bp)=(blue); color(100bp)=(black)}
+\pgfuseshading{myshadingE}
+\hskip 1cm
+\begin{pgfpicture}
+\pgfpathrectangle{\pgfpointorigin}{\pgfpoint{2cm}{1cm}}
+\pgfshadepath{myshadingE}{0}
+\pgfusepath{stroke}
+\pgfpathrectangle{\pgfpoint{3cm}{0cm}}{\pgfpoint{1cm}{2cm}}
+\pgfshadepath{myshadingE}{0}
+\pgfusepath{stroke}
+\pgfpathrectangle{\pgfpoint{5cm}{0cm}}{\pgfpoint{2cm}{2cm}}
+\pgfshadepath{myshadingE}{45}
+\pgfusepath{stroke}
+\pgfpathcircle{\pgfpoint{9cm}{1cm}}{1cm}
+\pgfshadepath{myshadingE}{45}
+\pgfusepath{stroke}
+\end{pgfpicture}
+
+\pgfdeclareverticalshading{myshadingF}{100bp}
+{color(0bp)=(red); color(25bp)=(green); color(75bp)=(blue); color(100bp)=(black)}
+\begin{tikzpicture}
+\draw (50bp,50bp) node {\pgfuseshading{myshadingF}};
+\draw[white,thick] (25bp,25bp) rectangle (75bp,75bp);
+\draw (50bp,0bp) node[below] {first two applications};
+\begin{scope}[xshift=5cm]
+\draw (50bp,50bp) node{\pgfuseshading{myshadingF}};
+\draw[rotate around={45:(50bp,50bp)},white,thick] (25bp,25bp) rectangle (75bp,75bp);
+\draw (50bp,0bp) node[below] {third application};
+\end{scope}
+\begin{scope}[xshift=10cm]
+\draw (50bp,50bp) node{\pgfuseshading{myshadingF}};
+\draw[white,thick] (50bp,50bp) circle (25bp);
+\draw (50bp,0bp) node[below] {fourth application};
+\end{scope}
+\end{tikzpicture}
+
+\pgfdeclareradialshading{ballshading}{\pgfpoint{-10bp}{10bp}}
+{color(0bp)=(red!15!white); color(9bp)=(red!75!white);
+color(18bp)=(red!70!black); color(25bp)=(red!50!black); color(50bp)=(black)}
+\pgfuseshading{ballshading}
+\hskip 1cm
+\begin{pgfpicture}
+\pgfpathrectangle{\pgfpointorigin}{\pgfpoint{1cm}{1cm}}
+\pgfshadepath{ballshading}{0}
+\pgfusepath{}
+\pgfpathcircle{\pgfpoint{3cm}{0cm}}{1cm}
+\pgfshadepath{ballshading}{0}
+\pgfusepath{}
+\pgfpathcircle{\pgfpoint{6cm}{0cm}}{1cm}
+\pgfshadepath{ballshading}{45}
+\pgfusepath{}
+\end{pgfpicture}
+
+\pgfdeclareverticalshading{myshadingG}{100bp}
+{color(0bp)=(red); color(25bp)=(green); color(75bp)=(blue); color(100bp)=(black)}
+\begin{pgfpicture}
+\pgfpathrectangle{\pgfpointorigin}{\pgfpoint{2cm}{1cm}}
+\pgfshadepath{myshadingG}{0}
+\pgfusepath{stroke}
+\pgfpathrectangle{\pgfpoint{3cm}{0cm}}{\pgfpoint{2cm}{1cm}}
+\pgfshadepath{myshadingG}{90}
+\pgfusepath{stroke}
+\pgfpathrectangle{\pgfpoint{6cm}{0cm}}{\pgfpoint{2cm}{1cm}}
+\pgfshadepath{myshadingG}{45}
+\pgfusepath{stroke}
+\end{pgfpicture}
+
+\pgfdeclareverticalshading{rainbow}{100bp}
+{color(0bp)=(red); color(25bp)=(red); color(35bp)=(yellow);
+color(45bp)=(green); color(55bp)=(cyan); color(65bp)=(blue);
+color(75bp)=(violet); color(100bp)=(violet)}
+\begin{tikzpicture}[shading=rainbow]
+\shade (0,0) rectangle node[white] {\textsc{pride}} (2,1);
+\shade[shading angle=90] (3,0) rectangle +(1,2);
+\end{tikzpicture}
+\end{document}

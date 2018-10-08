@@ -1,0 +1,92 @@
+%%
+%% This is file `pgfsys-cmykshadings-pdftex.def',
+%% 
+%% Copyright (c) 2018 David Purton <dcpurton@marshwiggle.net>
+%% 
+%% This work may be distributed and/or modified under the conditions of
+%% the LaTeX Project2 Public License, either version 1.3c of this license
+%% or (at your option) any later version. The latest version of this
+%% license is in
+%%    http://www.latex-project.org/lppl.txt
+%% and version 1.3c or later is part of all distributions of LaTeX
+%% version 2005/12/01 or later.
+%% 
+%% This work is "maintained" (as per the LPPL maintenance status)
+%% by David Purton.
+%% 
+%% This work consists of the file style file pgf-cmykshadings.sty and the
+%% driver files:
+%%   - pgfsys-cmykshadings-pdftex.def
+%%   - pgfsys-cmykshadings-xetex.def
+%%   - pgfsys-cmykshadings-luatex.def
+%%   - pgfsys-cmykshadings-divpdfmx.def
+%%
+%%
+%% All code in these files is taken from the PGF files pgfcoreshade.code.tex,
+%% pgfsys-pdftex.def, pgfsys-dvipdfmx.def, and pgfsys-luatex.def
+%% Copyright (c) 2006 Till Tantau and then slightly modified to output CMYK
+%% gradients instead of RGB ones.
+%%
+\ProvidesFile{pgfsys-cmykshadings-pdftex.def}[2018/10/08 CMYK shadings support for PGF pdftex driver (DCP)]
+
+\def\pgfsys@horicmykshading#1#2#3{%
+  {%
+    \pgf@parsefunccmyk{#3}%
+    \pgfmathparse{#2}%
+    \setbox\pgfutil@tempboxa=\hbox to\pgf@max{\vbox to\pgfmathresult pt{\vfil\pgfsys@invoke{/Sh sh}}\hfil}%
+    \pgf@process{\pgfpoint{\pgf@max}{#2}}%
+    \immediate\pdfxform resources {%
+      /Shading << /Sh << /ShadingType 2
+      /ColorSpace /DeviceCMYK
+      /Domain [\pgf@pdfparseddomain]
+      /Coords [\pgf@doma\space0 \pgf@domb\space0]
+      /Function \pgf@pdfparsedfunction
+      /Extend [false false] >> >>}\pgfutil@tempboxa% <<
+    \expandafter\xdef\csname @pgfshading#1!\endcsname{\leavevmode\noexpand\pdfrefxform\the\pdflastxform}% 
+  }%
+}
+
+\def\pgfsys@vertcmykshading#1#2#3{%
+  {%
+    \pgf@parsefunccmyk{#3}%
+    \pgfmathparse{#2}%
+    \setbox\pgfutil@tempboxa=\hbox to\pgfmathresult pt{\vbox to\pgf@max{\vfil\pgfsys@invoke{/Sh sh}}\hfil}%
+    \pgf@process{\pgfpoint{#2}{\pgf@max}}%
+    \immediate\pdfxform resources {%
+      /Shading << /Sh << /ShadingType 2
+      /ColorSpace /DeviceCMYK
+      /Domain [\pgf@pdfparseddomain]
+      /Coords [0 \pgf@doma\space0 \pgf@domb]
+      /Function \pgf@pdfparsedfunction
+      /Extend [false false] >> >>}\pgfutil@tempboxa% <<
+    \expandafter\xdef\csname @pgfshading#1!\endcsname{\leavevmode\noexpand\pdfrefxform\the\pdflastxform}%
+  }%
+}
+
+\def\pgfsys@radialcmykshading#1#2#3{%
+  {%
+    \pgf@parsefunccmyk{#3}%
+    \setbox\pgfutil@tempboxa=\hbox to2\pgf@max{\vbox to2\pgf@max{\vfil\pgfsys@invoke{/Sh sh}}\hfil}%
+    \pgf@process{#2}%
+    \pgf@xa=\pgf@x%
+    \pgf@ya=\pgf@y%
+    \pgf@process{\pgfpoint{\pgf@max}{\pgf@max}}%
+    \advance\pgf@xa by \pgf@x%
+    \advance\pgf@ya by \pgf@y%
+    \pgf@sys@bp@correct{\pgf@x}%
+    \pgf@sys@bp@correct{\pgf@y}%
+    \pgf@sys@bp@correct{\pgf@xa}%
+    \pgf@sys@bp@correct{\pgf@ya}%
+    \immediate\pdfxform resources {%
+      /Shading << /Sh << /ShadingType 3
+      /ColorSpace /DeviceCMYK
+      /Domain [\pgf@pdfparseddomain]
+      /Coords [\pgf@sys@tonumber{\pgf@xa} \pgf@sys@tonumber{\pgf@ya} \pgf@doma\space \pgf@sys@tonumber{\pgf@x} \pgf@sys@tonumber{\pgf@y} \pgf@domb]
+      /Function \pgf@pdfparsedfunction
+      /Extend [true false] >> >>}\pgfutil@tempboxa% <<
+    \expandafter\xdef\csname @pgfshading#1!\endcsname{\leavevmode\noexpand\pdfrefxform\the\pdflastxform}%
+  }%
+}
+
+\endinput
+

@@ -8,8 +8,9 @@ It will only work with `pdflatex`, `lualatex`, and `xelatex`.
 
 ## Usage
 
-Just add `\usepackage{pgf-cmykshadings}` to your document preamble. CMYK
-shadings are used by default.
+Just add `\usepackage{pgf-cmykshadings}` to your document preamble.
+`pgf-cmykshadings` should be loaded before `tikz` to ensure shadings defined by
+`tikz` are CMYK. CMYK shadings are used by default.
 
 RGB shadings can continue to be used by using the following macros:
 

@@ -9,8 +9,15 @@ It will only work with `pdflatex`, `lualatex`, and `xelatex`.
 ## Usage
 
 Just add `\usepackage{pgf-cmykshadings}` to your document preamble.
-`pgf-cmykshadings` should be loaded before `tikz` to ensure shadings defined by
-`tikz` are CMYK. CMYK shadings are used by default.
+
+A note on load order:
+
+- `pgf-cmykshadings` should be loaded *before* any shadings are defined
+  otherwise these will be defined as RGB. This means you should load
+  `pgf-cmykshadings` before (for example) `tikz` and `beamer`.
+- If you want to pass custom options to `xcolor` (e.g., a colour model or set
+  of named colours), you should load `pgf-cmykshadings` *after* `xcolor` or use
+  `\PassOptionsToPackage{...}{xcolor}` before loading `pgf-cmykshadings`.
 
 RGB shadings can continue to be used by using the following macros:
 

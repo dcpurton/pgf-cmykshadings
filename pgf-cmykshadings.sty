@@ -356,10 +356,14 @@
     \ifx\@@mod\XC@mod@rgb
       \pgf@declarehorizontalrgbshading[#1]{#2}{#3}{#4}%
     \else
-      \ifpgf@cmykshading@default
-        \pgf@declarehorizontalcmykshading[#1]{#2}{#3}{#4}%
-      \else
+      \ifx\@@mod\XC@mod@gray
         \pgf@declarehorizontalrgbshading[#1]{#2}{#3}{#4}%
+      \else
+        \ifpgf@cmykshading@default
+          \pgf@declarehorizontalcmykshading[#1]{#2}{#3}{#4}%
+        \else
+          \pgf@declarehorizontalrgbshading[#1]{#2}{#3}{#4}%
+        \fi
       \fi
     \fi
   \fi
@@ -372,10 +376,14 @@
     \ifx\@@mod\XC@mod@rgb
       \pgf@declareverticalrgbshading[#1]{#2}{#3}{#4}%
     \else
-      \ifpgf@cmykshading@default
-        \pgf@declareverticalcmykshading[#1]{#2}{#3}{#4}%
-      \else
+      \ifx\@@mod\XC@mod@gray
         \pgf@declareverticalrgbshading[#1]{#2}{#3}{#4}%
+      \else
+        \ifpgf@cmykshading@default
+          \pgf@declareverticalcmykshading[#1]{#2}{#3}{#4}%
+        \else
+          \pgf@declareverticalrgbshading[#1]{#2}{#3}{#4}%
+        \fi
       \fi
     \fi
   \fi
@@ -388,10 +396,14 @@
     \ifx\@@mod\XC@mod@rgb
       \pgf@declareradialrgbshading[#1]{#2}{#3}{#4}%
     \else
-      \ifpgf@cmykshading@default
-        \pgf@declareradialcmykshading[#1]{#2}{#3}{#4}%
-      \else
+      \ifx\@@mod\XC@mod@gray
         \pgf@declareradialrgbshading[#1]{#2}{#3}{#4}%
+      \else
+        \ifpgf@cmykshading@default
+          \pgf@declareradialcmykshading[#1]{#2}{#3}{#4}%
+        \else
+          \pgf@declareradialrgbshading[#1]{#2}{#3}{#4}%
+        \fi
       \fi
     \fi
   \fi
@@ -404,10 +416,14 @@
     \ifx\@@mod\XC@mod@rgb
       \pgfusergbshading{#1}%
     \else
-      \ifpgf@cmykshading@default
-        \pgfusecmykshading{#1}%
-      \else
+      \ifx\@@mod\XC@mod@gray
         \pgfusergbshading{#1}%
+      \else
+        \ifpgf@cmykshading@default
+          \pgfusecmykshading{#1}%
+        \else
+          \pgfusergbshading{#1}%
+        \fi
       \fi
     \fi
   \fi

@@ -10,7 +10,21 @@ It will only work with `pdflatex`, `lualatex`, and `xelatex`.
 
 Just add `\usepackage{pgf-cmykshadings}` to your document preamble.
 
-A note on load order:
+### Colour models
+
+By default, `pgf-cmykshadings` will always produce CMYK shadings unless the
+current `xcolor` colour model is RGB, in which case an RGB shading will be
+produced. This is equivalent to using the `cmyk` package option.
+
+The package option `rgb` will always produce `rgb` shadings unless the current
+`xcolor` colour model is CMYK, in which case a CMYK shading will be produced.
+
+In practice this means that if you are using the natural colour model of `xcolor` you can still get mismatched colours if you, for example, create a shading from green (which is defined as RGB) to cyan (which is defined as CMYK). The shading has to pick one colour model and will look different to one of the solid colours.
+
+It is recommended to always load `xcolor` before before `pgf-cmykshadings` with
+either the `rgb` or `cmyk` option to avoid colour surprises.
+
+### Load order
 
 - `pgf-cmykshadings` should be loaded *before* any shadings are defined
   otherwise these will be defined as RGB. This means you should load
@@ -19,24 +33,23 @@ A note on load order:
   of named colours), you should load `pgf-cmykshadings` *after* `xcolor` or use
   `\PassOptionsToPackage{...}{xcolor}` before loading `pgf-cmykshadings`.
 
-RGB shadings can continue to be used by using the following macros:
+### Explicitly choosing RGB or CMYK shadings
+
+RGB shadings can always be set up using:
 
   - `\pgfdeclarehorizontalrgbshading`
   - `\pgfdeclareverticalrgbshading`
   - `\pgfdeclareradialrgbshading`
 
-An RGB shading can then be used with `\pgfusergbshading`.
+And then used with `\pgfusergbshading`.
 
-It is also possible to retain RGB shadings as the default and use CMYK shadings
-on demand. This can be set up by loading `pgf-cmykshadings` with the
-`nodefault` option. In this case, CMYK shadings can be set up using the
-following macros:
+Similarly, CMYK shadings can always be set up using:
 
   - `\pgfdeclarehorizontalcmykshading`
   - `\pgfdeclareverticalcmykshading`
   - `\pgfdeclareradialcmykshading`
 
-And a CMYK shading can then be used with `\pgfusecmykshading`.
+And then used with `\pgfusecmykshading`.
 
 ## Licence
 

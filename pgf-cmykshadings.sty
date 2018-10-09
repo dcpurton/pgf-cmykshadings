@@ -285,27 +285,92 @@
 
 % style options to make use CMYK gradients by default or not
 
-\let\pgfdeclarehorizontalrgbshading\pgfdeclarehorizontalshading
-\let\pgfdeclareverticalrgbshading\pgfdeclareverticalshading
-\let\pgfdeclareradialrgbshading\pgfdeclareradialshading
+\def\pgfdeclarehorizontalrgbshading{\pgfutil@ifnextchar[\pgf@declarehorizontalrgbshading{\pgf@declarehorizontalrgbshading[]}}%
+\def\pgfdeclareverticalrgbshading{\pgfutil@ifnextchar[\pgf@declareverticalrgbshading{\pgf@declareverticalrgbshading[]}}%
+\def\pgfdeclareradialrgbshading{\pgfutil@ifnextchar[\pgf@declareradialrgbshading{\pgf@declareradialrgbshading[]}}%
+
+\let\pgf@declarehorizontalrgbshading\pgf@declarehorizontalshading
+\let\pgf@declareverticalrgbshading\pgf@declareverticalshading
+\let\pgf@declareradialrgbshading\pgf@declareradialshading
 \let\pgfusergbshading\pgfuseshading
 
-\DeclareOption{default}{%
-  \let\pgfdeclarehorizontalshading\pgfdeclarehorizontalcmykshading
-  \let\pgfdeclareverticalshading\pgfdeclareverticalcmykshading
-  \let\pgfdeclareradialshading\pgfdeclareradialcmykshading
-  \let\pgfuseshading\pgfusecmykshading
+\newif\ifpgf@cmykshading@default
+
+\DeclareOption{cmyk}{%
+  \pgf@cmykshading@defaulttrue
 }
 
-\DeclareOption{nodefault}{%
-  \let\pgfdeclarehorizontalshading\pgfdeclarehorizontalrgbshading
-  \let\pgfdeclareverticalshading\pgfdeclareverticalrgbshading
-  \let\pgfdeclareradialshading\pgfdeclareradialrgbshading
-  \let\pgfuseshading\pgfusergbshading
+\DeclareOption{rgb}{%
+  \pgf@cmykshading@defaultfalse
 }
 
-\ExecuteOptions{default}
+\ExecuteOptions{cmyk}
 
 \ProcessOptions\relax
 
+\def\pgf@declarehorizontalshading[#1]#2#3#4{%
+  \ifx\@@mod\XC@mod@cmyk
+    \pgf@declarehorizontalcmykshading[#1]{#2}{#3}{#4}%
+  \else
+    \ifx\@@mod\XC@mod@rgb
+      \pgf@declarehorizontalrgbshading[#1]{#2}{#3}{#4}%
+    \else
+      \ifpgf@cmykshading@default
+        \pgf@declarehorizontalcmykshading[#1]{#2}{#3}{#4}%
+      \else
+        \pgf@declarehorizontalrgbshading[#1]{#2}{#3}{#4}%
+      \fi
+    \fi
+  \fi
+}
+
+\def\pgf@declareverticalshading[#1]#2#3#4{%
+  \ifx\@@mod\XC@mod@cmyk
+    \pgf@declareverticalcmykshading[#1]{#2}{#3}{#4}%
+  \else
+    \ifx\@@mod\XC@mod@rgb
+      \pgf@declareverticalrgbshading[#1]{#2}{#3}{#4}%
+    \else
+      \ifpgf@cmykshading@default
+        \pgf@declareverticalcmykshading[#1]{#2}{#3}{#4}%
+      \else
+        \pgf@declareverticalrgbshading[#1]{#2}{#3}{#4}%
+      \fi
+    \fi
+  \fi
+}
+
+\def\pgf@declareradialshading[#1]#2#3#4{%
+  \ifx\@@mod\XC@mod@cmyk
+    \pgf@declareradialcmykshading[#1]{#2}{#3}{#4}%
+  \else
+    \ifx\@@mod\XC@mod@rgb
+      \pgf@declareradialrgbshading[#1]{#2}{#3}{#4}%
+    \else
+      \ifpgf@cmykshading@default
+        \pgf@declareradialcmykshading[#1]{#2}{#3}{#4}%
+      \else
+        \pgf@declareradialrgbshading[#1]{#2}{#3}{#4}%
+      \fi
+    \fi
+  \fi
+}
+
+\def\pgfuseshading#1{%
+  \ifx\@@mod\XC@mod@cmyk
+    \pgfusecmykshading{#1}%
+  \else
+    \ifx\@@mod\XC@mod@rgb
+      \pgfusergbshading{#1}%
+    \else
+      \ifpgf@cmykshading@default
+        \pgfusecmykshading{#1}%
+      \else
+        \pgfusergbshading{#1}%
+      \fi
+    \fi
+  \fi
+}
+
 \endinput
+

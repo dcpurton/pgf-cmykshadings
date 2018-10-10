@@ -2,8 +2,6 @@
 
 The `pgf-cmykshadings` package provides support for CMYK shadings in PGF/TikZ.
 
-At present functional shadings are not supported.
-
 It will only work with `pdflatex`, `lualatex`, and `xelatex`.
 
 ## Usage
@@ -40,6 +38,7 @@ RGB shadings can always be set up using:
   - `\pgfdeclarehorizontalrgbshading`
   - `\pgfdeclareverticalrgbshading`
   - `\pgfdeclareradialrgbshading`
+  - `\pgfdeclarefunctionalrgbshading`
 
 And then used with `\pgfusergbshading`.
 
@@ -48,8 +47,19 @@ Similarly, CMYK shadings can always be set up using:
   - `\pgfdeclarehorizontalcmykshading`
   - `\pgfdeclareverticalcmykshading`
   - `\pgfdeclareradialcmykshading`
+  - `\pgfdeclarefunctionalcmykshading`
 
 And then used with `\pgfusecmykshading`.
+
+### General (functional) shadings
+
+By nature, the PostScript® code used to generate generate functional shadings
+must output either RGB or CMYK data. For this reason,
+`\pgfdeclarefunctionalshading` is *not* portable across colour models. It is
+recommended to always use `\pgfdeclarefunctionalrgbshading` or
+`\pgfdeclarefunctionalcmykshading` along with `\pgfusergbshading` or
+`\pgfusecmykshading` respectively. A warning will be emitted if you use
+`\pgfdeclarefunctionalshading`.
 
 ## Licence
 

@@ -27,7 +27,7 @@
 %% Copyright (c) 2006 Till Tantau and then slightly modified to output CMYK
 %% gradients instead of RGB ones.
 %%
-\ProvidesPackage{pgf-cmykshadings}[2018/10/09 CMYK shadings support for PGF (DCP)]
+\ProvidesPackage{pgf-cmykshadings}[2018/10/10 CMYK shadings support for PGF (DCP)]
 
 \RequirePackage{pgf}
 
@@ -226,6 +226,46 @@
     \expandafter\let\csname @pgfshading#2!\endcsname=\pgfutil@empty%
   \fi}
 
+\def\pgfdeclarefunctionalcmykshading{\pgfutil@ifnextchar[\pgf@declarefunctionalcmykshading{\pgf@declarefunctionalcmykshading[]}}%
+\def\pgf@declarefunctionalcmykshading[#1]#2#3#4#5#6{%
+  \expandafter\def\csname pgf@deps@pgfshading#2!\endcsname{#1}%
+  \expandafter\ifx\csname pgf@deps@pgfshading#2!\endcsname\pgfutil@empty%
+    \pgfshade@functionalcmykdo{#2}{#3}{#4}{#5}{#6}%
+  \else%
+    \expandafter\def\csname pgf@func@pgfshading#2!\endcsname{\pgfshade@functionalcmykdo}%
+    \expandafter\def\csname pgf@args@pgfshading#2!\endcsname{{#3}{#4}{#5}{#6}}%
+    \expandafter\let\csname @pgfshading#2!\endcsname=\pgfutil@empty%
+  \fi}
+\def\pgfshade@functionalcmykdo#1#2#3#4#5{%
+  {%
+    #4%
+    \pgfsys@functionalcmykshading{#1}{#2}{#3}{#5}%
+  }%
+}
+
+\newdimen\pgf@xd
+
+\def\pgfshadecolortocmyk#1#2{%
+  \pgfutil@colorlet{pgf@tempcol}{#1}%
+  \pgfutil@extractcolorspec{pgf@tempcol}{\pgf@tempcolor}%
+  \expandafter\pgfutil@convertcolorspec\pgf@tempcolor{cmyk}{\pgf@cmykcolor}%
+  \expandafter\pgfshading@cmyk\pgf@cmykcolor\relax%
+  \edef#2{\pgf@sys@tonumber{\pgf@xa}\space\pgf@sys@tonumber{\pgf@xb}\space\pgf@sys@tonumber{\pgf@xc}\space\pgf@sys@tonumber{\pgf@xd}\space}%
+  \c@pgf@counta\escapechar%
+  \escapechar-1\relax%
+  \expandafter\edef\csname\string#2cyan\endcsname{\pgf@sys@tonumber{\pgf@xa}\space}%
+  \expandafter\edef\csname\string#2magenta\endcsname{\pgf@sys@tonumber{\pgf@xb}\space}%
+  \expandafter\edef\csname\string#2yellow\endcsname{\pgf@sys@tonumber{\pgf@xc}\space}%
+  \expandafter\edef\csname\string#2black\endcsname{\pgf@sys@tonumber{\pgf@xd}\space}%
+  \escapechar\c@pgf@counta%
+}
+
+\def\pgfshading@cmyk#1,#2,#3,#4\relax{%
+  \pgf@xa=#1pt%
+  \pgf@xb=#2pt%
+  \pgf@xc=#3pt%
+  \pgf@xd=#4pt%
+}
 
 \def\pgfusecmykshading#1{%
   \edef\pgf@shadingname{@pgfshading#1}%
@@ -330,6 +370,23 @@
 \def\pgfdeclareverticalrgbshading{\pgfutil@ifnextchar[\pgf@declareverticalrgbshading{\pgf@declareverticalrgbshading[]}}%
 \def\pgfdeclareradialrgbshading{\pgfutil@ifnextchar[\pgf@declareradialrgbshading{\pgf@declareradialrgbshading[]}}%
 
+\def\pgfdeclarefunctionalrgbshading{\pgfutil@ifnextchar[\pgf@declarefunctionalrgbshading{\pgf@declarefunctionalrgbshading[]}}%
+\def\pgf@declarefunctionalrgbshading[#1]#2#3#4#5#6{%
+  \expandafter\def\csname pgf@deps@pgfshading#2!\endcsname{#1}%
+  \expandafter\ifx\csname pgf@deps@pgfshading#2!\endcsname\pgfutil@empty%
+    \pgfshade@functionalrgbdo{#2}{#3}{#4}{#5}{#6}%
+  \else%
+    \expandafter\def\csname pgf@func@pgfshading#2!\endcsname{\pgfshade@functionalrgbdo}%
+    \expandafter\def\csname pgf@args@pgfshading#2!\endcsname{{#3}{#4}{#5}{#6}}%
+    \expandafter\let\csname @pgfshading#2!\endcsname=\pgfutil@empty%
+  \fi}
+\def\pgfshade@functionalrgbdo#1#2#3#4#5{%
+  {%
+    #4%
+    \pgfsys@functionalshading{#1}{#2}{#3}{#5}%
+  }%
+}
+
 \let\pgf@declarehorizontalrgbshading\pgf@declarehorizontalshading
 \let\pgf@declareverticalrgbshading\pgf@declareverticalshading
 \let\pgf@declareradialrgbshading\pgf@declareradialshading
@@ -403,6 +460,27 @@
           \pgf@declareradialcmykshading[#1]{#2}{#3}{#4}%
         \else
           \pgf@declareradialrgbshading[#1]{#2}{#3}{#4}%
+        \fi
+      \fi
+    \fi
+  \fi
+}
+
+\def\pgf@declarefunctionalshading[#1]#2#3#4#5#6{%
+  \PackageWarning{pgf-cmykshadings}{\string\pgfdeclarefunctionalshading\space is NOT portable. Use either \string\pgfdeclarefunctionalrgbshading\space or \string\pgfdeclarefunctionalcmykshading\space along with \string\pgfusergbshading\space or \string\pgfusecmykshading\space respectively}%
+  \ifx\@@mod\XC@mod@cmyk
+    \pgf@declarefunctionalcmykshading[#1]{#2}{#3}{#4}{#5}{#6}%
+  \else
+    \ifx\@@mod\XC@mod@rgb
+      \pgf@declarefunctionalrgbshading[#1]{#2}{#3}{#4}{#5}{#6}%
+    \else
+      \ifx\@@mod\XC@mod@gray
+        \pgf@declarefunctionalrgbshading[#1]{#2}{#3}{#4}{#5}{#6}%
+      \else
+        \ifpgf@cmykshading@default
+          \pgf@declarefunctionalcmykshading[#1]{#2}{#3}{#4}{#5}{#6}%
+        \else
+          \pgf@declarefunctionalrgbshading[#1]{#2}{#3}{#4}{#5}{#6}%
         \fi
       \fi
     \fi

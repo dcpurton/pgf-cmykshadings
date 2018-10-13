@@ -10,17 +10,28 @@ Just add `\usepackage{pgf-cmykshadings}` to your document preamble.
 
 ### Colour models
 
-By default, `pgf-cmykshadings` will always produce CMYK shadings unless the
-current `xcolor` colour model is RGB, in which case an RGB shading will be
-produced. This is equivalent to using the `cmyk` package option.
+`pgf-cmykshadings` tries to produce shadings consistent with the currently
+selected `xcolor` colour model. `rgb`, `cmyk`, and `gray` are supported.
 
-The package option `rgb` will always produce `rgb` shadings unless the current
-`xcolor` colour model is CMYK, in which case a CMYK shading will be produced.
+**Note:** The colour model chosen for a shading is the based on the `xcolor`
+colour model *at the time the shading is created*. This is either when
+`\pgfdeclare*shading` is called with no optional argument or when
+`\pgfuseshading` is called if `\pgfdeclare*shading` was called with an optional
+argument.
 
-In practice this means that if you are using the natural colour model of `xcolor` you can still get mismatched colours if you, for example, create a shading from green (which is defined as RGB) to cyan (which is defined as CMYK). The shading has to pick one colour model and will look different to one of the solid colours.
+If the `xcolor` `natural` colour model is in use then the shading colour model
+will be `cmyk` by default (equivalent to passing the `cmyk` option to the
+`pgf-cmykshadings` package). `rgb` shadings can be output instead by passing
+the `rgb` option to the `pgf-cmykshadings` package.
 
-It is recommended to always load `xcolor` before before `pgf-cmykshadings` with
-either the `rgb` or `cmyk` option to avoid colour surprises.
+In practice this means that if you are using the `natural` colour model of
+`xcolor` you can still get mismatched colours if you, for example, create a
+shading from green (which is defined as RGB) to cyan (which is defined as
+CMYK). The shading has to pick one colour model and will look different to one
+of the solid colours.
+
+It is recommended to always load `xcolor` before `pgf-cmykshadings` with either
+the `rgb`, `cmyk`, or `gray` options to avoid colour surprises.
 
 ### Load order
 
@@ -31,34 +42,22 @@ either the `rgb` or `cmyk` option to avoid colour surprises.
   of named colours), you should load `pgf-cmykshadings` *after* `xcolor` or use
   `\PassOptionsToPackage{...}{xcolor}` before loading `pgf-cmykshadings`.
 
-### Explicitly choosing RGB or CMYK shadings
-
-RGB shadings can always be set up using:
-
-  - `\pgfdeclarehorizontalrgbshading`
-  - `\pgfdeclareverticalrgbshading`
-  - `\pgfdeclareradialrgbshading`
-  - `\pgfdeclarefunctionalrgbshading`
-
-And then used with `\pgfusergbshading`.
-
-Similarly, CMYK shadings can always be set up using:
-
-  - `\pgfdeclarehorizontalcmykshading`
-  - `\pgfdeclareverticalcmykshading`
-  - `\pgfdeclareradialcmykshading`
-  - `\pgfdeclarefunctionalcmykshading`
-
-And then used with `\pgfusecmykshading`.
-
 ### General (functional) shadings
 
 By nature, the PostScript® code used to generate functional shadings must
 output either RGB or CMYK data. For this reason, `\pgfdeclarefunctionalshading`
-is *not* portable across colour models. It is recommended to always use
-`\pgfdeclarefunctionalrgbshading` or `\pgfdeclarefunctionalcmykshading` along
-with `\pgfusergbshading` or `\pgfusecmykshading` respectively. A warning will
-be emitted if you use `\pgfdeclarefunctionalshading`.
+is *not* portable across colour models.
+
+Take particular care that the *same* colour model is in use at declaration time
+and use time for functional shadings declared with an optional argument as
+otherwise the PostScript® data will not match the declared colour space and you
+will end up with a malformed PDF.
+
+This also means that you should *not* use the functional shadings from the
+`tikz` shading library (`bilinear interpolation`, `color wheel`, `color wheel
+black center`, `color wheel white center`, and `Mandelbrot set`) except when
+the `xcolor` RGB model is in use, otherwise you will end up with a malformed
+PDF.
 
 ## Licence
 

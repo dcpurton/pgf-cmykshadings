@@ -373,37 +373,37 @@ endobj
 14 0 obj
 <<
  /FunctionType 4 /Domain [0.0 113.38728 0.0 113.38728] /Range [0 1 0 1 0 1 0 1] 
-/Length 246       
+/Length 599       
 >>
 stream
-{ 2 copy 45 sub dup mul exch 40 sub dup mul 0.5 mul add sqrt dup mul neg 1.0005 exch exp 1.0 exch sub 1.0 exch sub 3 1 roll 70 sub dup mul .5 mul exch 70 sub dup mul add sqrt dup mul neg 1.002 exch exp 1.0 exch sub 1.0 exch sub 0.0 3 1 roll 0.0 }
+{ 2 copy 45 sub dup mul exch 40 sub dup mul 0.5 mul add sqrt dup mul neg 1.0005 exch exp 1.0 exch sub 3 1 roll 70 sub dup mul .5 mul exch 70 sub dup mul add sqrt dup mul neg 1.002 exch exp 1.0 exch sub 1.0 3 1 roll 1.0 exch sub 3 1 roll 1.0 exch sub 3 1 roll 1.0 exch sub 3 1 roll 3 copy 2 copy gt { exch } if pop 2 copy gt { exch } if pop dup 3 1 roll sub 0.0 2 copy lt { exch } if pop 1.0 2 copy gt { exch } if pop 4 1 roll dup 3 1 roll sub 0.0 2 copy lt { exch } if pop 1.0 2 copy gt { exch } if pop 4 1 roll dup 3 1 roll sub 0.0 2 copy lt { exch } if pop 1.0 2 copy gt { exch } if pop 4 1 roll }
 endstream
 endobj
 16 0 obj
 <<
  /FunctionType 4 /Domain [-28.3468 28.3468 -28.3468 28.3468] /Range [0 1 0 1 0 1 0 1] 
-/Length 229       
+/Length 598       
 >>
 stream
-{ 2 copy 2 copy abs exch abs add 0.0001 ge { atan } { pop } ifelse 3 1 roll dup mul exch dup mul add sqrt 30 mul add sin 1 add 2 div 0.0 0.5 1.0 4 3 roll 1 exch sub 0.0 0.0 0.0 0.0 5 4 roll add dup 1.0 ge { pop 1.0 } { } ifelse }
+{ 2 copy 2 copy abs exch abs add 0.0001 ge { atan } { pop } ifelse 3 1 roll dup mul exch dup mul add sqrt 30 mul add sin 1 add 2 div dup 1.0 1.0 1.0 5 4 roll mul 3 1 roll 3 index mul 3 1 roll 4 3 roll mul 3 1 roll 1.0 exch sub 3 1 roll 1.0 exch sub 3 1 roll 1.0 exch sub 3 1 roll 3 copy 2 copy gt { exch } if pop 2 copy gt { exch } if pop dup 3 1 roll sub 0.0 2 copy lt { exch } if pop 1.0 2 copy gt { exch } if pop 4 1 roll dup 3 1 roll sub 0.0 2 copy lt { exch } if pop 1.0 2 copy gt { exch } if pop 4 1 roll dup 3 1 roll sub 0.0 2 copy lt { exch } if pop 1.0 2 copy gt { exch } if pop 4 1 roll }
 endstream
 endobj
 18 0 obj
 <<
  /FunctionType 4 /Domain [-28.3468 28.3468 -28.3468 28.3468] /Range [0 1 0 1 0 1 0 1] 
-/Length 229       
+/Length 598       
 >>
 stream
-{ 2 copy 2 copy abs exch abs add 0.0001 ge { atan } { pop } ifelse 3 1 roll dup mul exch dup mul add sqrt 30 mul add sin 1 add 2 div 0.0 0.5 1.0 4 3 roll 1 exch sub 0.0 1.0 1.0 0.0 5 4 roll add dup 1.0 ge { pop 1.0 } { } ifelse }
+{ 2 copy 2 copy abs exch abs add 0.0001 ge { atan } { pop } ifelse 3 1 roll dup mul exch dup mul add sqrt 30 mul add sin 1 add 2 div dup 1.0 0.0 0.0 5 4 roll mul 3 1 roll 3 index mul 3 1 roll 4 3 roll mul 3 1 roll 1.0 exch sub 3 1 roll 1.0 exch sub 3 1 roll 1.0 exch sub 3 1 roll 3 copy 2 copy gt { exch } if pop 2 copy gt { exch } if pop dup 3 1 roll sub 0.0 2 copy lt { exch } if pop 1.0 2 copy gt { exch } if pop 4 1 roll dup 3 1 roll sub 0.0 2 copy lt { exch } if pop 1.0 2 copy gt { exch } if pop 4 1 roll dup 3 1 roll sub 0.0 2 copy lt { exch } if pop 1.0 2 copy gt { exch } if pop 4 1 roll }
 endstream
 endobj
 20 0 obj
 <<
  /FunctionType 4 /Domain [0.0 100.00128 0.0 100.00128] /Range [0 1 0 1 0 1 0 1] 
-/Length 420       
+/Length 715       
 >>
 stream
-{ 100 div exch 100 div 2 copy neg 1 add exch neg 1 add 3 1 roll 2 copy exch 5 2 roll 6 copy 6 copy 6 copy 1.0 mul exch 0.0 mul add mul 4 1 roll 0.0 mul exch 1.0 mul add mul add 19 1 roll 1.0 mul exch 0.0 mul add mul 4 1 roll 1.0 mul exch 0.0 mul add mul add 13 1 roll 0.0 mul exch 1.0 mul add mul 4 1 roll 1.0 mul exch 1.0 mul add mul add 7 1 roll 0.0 mul exch 0.0 mul add mul 4 1 roll 0.0 mul exch 0.0 mul add mul add }
+{ 100 div exch 100 div 2 copy neg 1 add exch neg 1 add 3 1 roll 2 copy exch 5 2 roll 6 copy 6 copy 0.0 mul exch 1.0 mul add mul 4 1 roll 1.0 mul exch 0.0 mul add mul add 13 1 roll 0.0 mul exch 1.0 mul add mul 4 1 roll 0.0 mul exch 1.0 mul add mul add 7 1 roll 1.0 mul exch 0.0 mul add mul 4 1 roll 0.0 mul exch 0.0 mul add mul add 1.0 exch sub 3 1 roll 1.0 exch sub 3 1 roll 1.0 exch sub 3 1 roll 3 copy 2 copy gt { exch } if pop 2 copy gt { exch } if pop dup 3 1 roll sub 0.0 2 copy lt { exch } if pop 1.0 2 copy gt { exch } if pop 4 1 roll dup 3 1 roll sub 0.0 2 copy lt { exch } if pop 1.0 2 copy gt { exch } if pop 4 1 roll dup 3 1 roll sub 0.0 2 copy lt { exch } if pop 1.0 2 copy gt { exch } if pop 4 1 roll }
 endstream
 endobj
 15 0 obj
@@ -2121,37 +2121,37 @@ endobj
 99 0 obj
 <<
  /FunctionType 4 /Domain [0.0 113.38728 0.0 113.38728] /Range [0 1] 
-/Length 333       
+/Length 260       
 >>
 stream
-{ 2 copy 45 sub dup mul exch 40 sub dup mul 0.5 mul add sqrt dup mul neg 1.0005 exch exp 1.0 exch sub 1.0 exch sub 3 1 roll 70 sub dup mul .5 mul exch 70 sub dup mul add sqrt dup mul neg 1.002 exch exp 1.0 exch sub 1.0 exch sub 0.0 3 1 roll 0.11 mul exch 0.59 mul add exch 0.3 mul add dup 1.0 ge { pop 1.0 } { } ifelse 1.0 exch sub }
+{ 2 copy 45 sub dup mul exch 40 sub dup mul 0.5 mul add sqrt dup mul neg 1.0005 exch exp 1.0 exch sub 3 1 roll 70 sub dup mul .5 mul exch 70 sub dup mul add sqrt dup mul neg 1.002 exch exp 1.0 exch sub 1.0 3 1 roll 0.11 mul exch 0.59 mul add exch 0.3 mul add }
 endstream
 endobj
 101 0 obj
 <<
  /FunctionType 4 /Domain [-28.3468 28.3468 -28.3468 28.3468] /Range [0 1] 
-/Length 142       
+/Length 259       
 >>
 stream
-{ 2 copy 2 copy abs exch abs add 0.0001 ge { atan } { pop } ifelse 3 1 roll dup mul exch dup mul add sqrt 30 mul add sin 1 add 2 div 1.0 mul }
+{ 2 copy 2 copy abs exch abs add 0.0001 ge { atan } { pop } ifelse 3 1 roll dup mul exch dup mul add sqrt 30 mul add sin 1 add 2 div dup 1.0 1.0 1.0 5 4 roll mul 3 1 roll 3 index mul 3 1 roll 4 3 roll mul 3 1 roll 0.11 mul exch 0.59 mul add exch 0.3 mul add }
 endstream
 endobj
 103 0 obj
 <<
  /FunctionType 4 /Domain [-28.3468 28.3468 -28.3468 28.3468] /Range [0 1] 
-/Length 143       
+/Length 259       
 >>
 stream
-{ 2 copy 2 copy abs exch abs add 0.0001 ge { atan } { pop } ifelse 3 1 roll dup mul exch dup mul add sqrt 30 mul add sin 1 add 2 div 0.59 mul }
+{ 2 copy 2 copy abs exch abs add 0.0001 ge { atan } { pop } ifelse 3 1 roll dup mul exch dup mul add sqrt 30 mul add sin 1 add 2 div dup 1.0 0.0 0.0 5 4 roll mul 3 1 roll 3 index mul 3 1 roll 4 3 roll mul 3 1 roll 0.11 mul exch 0.59 mul add exch 0.3 mul add }
 endstream
 endobj
 105 0 obj
 <<
  /FunctionType 4 /Domain [0.0 100.00128 0.0 100.00128] /Range [0 1] 
-/Length 520       
+/Length 376       
 >>
 stream
-{ 100 div exch 100 div 2 copy neg 1 add exch neg 1 add 3 1 roll 2 copy exch 5 2 roll 6 copy 6 copy 6 copy 1.0 mul exch 0.0 mul add mul 4 1 roll 0.0 mul exch 1.0 mul add mul add 19 1 roll 1.0 mul exch 0.0 mul add mul 4 1 roll 1.0 mul exch 0.0 mul add mul add 13 1 roll 0.0 mul exch 1.0 mul add mul 4 1 roll 1.0 mul exch 1.0 mul add mul add 7 1 roll 0.0 mul exch 0.0 mul add mul 4 1 roll 0.0 mul exch 0.0 mul add mul add exch 0.11 mul add exch 0.59 mul add exch 0.3 mul add dup 1.0 ge { pop 1.0 } { } ifelse 1.0 exch sub }
+{ 100 div exch 100 div 2 copy neg 1 add exch neg 1 add 3 1 roll 2 copy exch 5 2 roll 6 copy 6 copy 0.0 mul exch 1.0 mul add mul 4 1 roll 1.0 mul exch 0.0 mul add mul add 13 1 roll 0.0 mul exch 1.0 mul add mul 4 1 roll 0.0 mul exch 1.0 mul add mul add 7 1 roll 1.0 mul exch 0.0 mul add mul 4 1 roll 0.0 mul exch 0.0 mul add mul add 0.11 mul exch 0.59 mul add exch 0.3 mul add }
 endstream
 endobj
 100 0 obj
@@ -3217,8 +3217,8 @@ endobj
 <<
 /Producer (pdfTeX-1.40.19)
 /Creator (TeX)
-/CreationDate (D:20181014012616+10'30')
-/ModDate (D:20181014012616+10'30')
+/CreationDate (D:20181015221555+10'30')
+/ModDate (D:20181015221555+10'30')
 /Trapped /False
 /PTEX.Fullbanner (This is pdfTeX, Version 3.14159265-2.6-1.40.19 (TeX Live 2019/dev/Debian) kpathsea version 6.3.1/dev)
 >>
@@ -3226,9 +3226,9 @@ endobj
 xref
 0 142
 0000000000 65535 f 
-0000055265 00000 n 
-0000055285 00000 n 
-0000055305 00000 n 
+0000056667 00000 n 
+0000056687 00000 n 
+0000056707 00000 n 
 0000000015 00000 n 
 0000000188 00000 n 
 0000000635 00000 n 
@@ -3240,13 +3240,13 @@ xref
 0000002091 00000 n 
 0000002265 00000 n 
 0000007979 00000 n 
-0000009675 00000 n 
-0000008365 00000 n 
-0000010036 00000 n 
-0000008740 00000 n 
-0000010409 00000 n 
-0000009115 00000 n 
-0000010782 00000 n 
+0000011061 00000 n 
+0000008718 00000 n 
+0000011422 00000 n 
+0000009462 00000 n 
+0000011795 00000 n 
+0000010206 00000 n 
+0000012168 00000 n 
 0000002860 00000 n 
 0000003034 00000 n 
 0000003282 00000 n 
@@ -3255,123 +3255,123 @@ xref
 0000004159 00000 n 
 0000004700 00000 n 
 0000004868 00000 n 
-0000011135 00000 n 
+0000012521 00000 n 
 0000007864 00000 n 
 0000005567 00000 n 
-0000090770 00000 n 
-0000091058 00000 n 
-0000091200 00000 n 
-0000009851 00000 n 
-0000010210 00000 n 
-0000010583 00000 n 
-0000010950 00000 n 
-0000011414 00000 n 
-0000011582 00000 n 
-0000012123 00000 n 
-0000012291 00000 n 
-0000013216 00000 n 
-0000013391 00000 n 
-0000013641 00000 n 
-0000013816 00000 n 
-0000014255 00000 n 
-0000014429 00000 n 
-0000014672 00000 n 
-0000014846 00000 n 
-0000015089 00000 n 
-0000015264 00000 n 
-0000015698 00000 n 
-0000015872 00000 n 
-0000032730 00000 n 
-0000034264 00000 n 
-0000033082 00000 n 
-0000034624 00000 n 
-0000021685 00000 n 
-0000021570 00000 n 
-0000016434 00000 n 
-0000090913 00000 n 
-0000033439 00000 n 
-0000034996 00000 n 
-0000033796 00000 n 
-0000035368 00000 n 
-0000021975 00000 n 
-0000022149 00000 n 
-0000022392 00000 n 
-0000022560 00000 n 
-0000023088 00000 n 
-0000023256 00000 n 
-0000023784 00000 n 
-0000023952 00000 n 
-0000024618 00000 n 
-0000024786 00000 n 
-0000025314 00000 n 
-0000025482 00000 n 
-0000026378 00000 n 
-0000026553 00000 n 
-0000035720 00000 n 
-0000032615 00000 n 
-0000026802 00000 n 
-0000034440 00000 n 
-0000034798 00000 n 
-0000035170 00000 n 
-0000035536 00000 n 
-0000035973 00000 n 
-0000036148 00000 n 
-0000036583 00000 n 
-0000036757 00000 n 
-0000036998 00000 n 
-0000037172 00000 n 
-0000037413 00000 n 
-0000037588 00000 n 
-0000038018 00000 n 
-0000038192 00000 n 
-0000042442 00000 n 
-0000044107 00000 n 
-0000042903 00000 n 
-0000044471 00000 n 
-0000043180 00000 n 
-0000044848 00000 n 
-0000043458 00000 n 
-0000045225 00000 n 
-0000038736 00000 n 
-0000038912 00000 n 
-0000039154 00000 n 
-0000039324 00000 n 
-0000039844 00000 n 
-0000040014 00000 n 
-0000045582 00000 n 
-0000042324 00000 n 
-0000040534 00000 n 
-0000044285 00000 n 
-0000044647 00000 n 
-0000045024 00000 n 
-0000045395 00000 n 
-0000045904 00000 n 
-0000046074 00000 n 
-0000046708 00000 n 
-0000046878 00000 n 
-0000047398 00000 n 
-0000047568 00000 n 
-0000048438 00000 n 
-0000048615 00000 n 
-0000055032 00000 n 
-0000054914 00000 n 
-0000048856 00000 n 
-0000055358 00000 n 
-0000055467 00000 n 
-0000056066 00000 n 
-0000056509 00000 n 
-0000068094 00000 n 
-0000068301 00000 n 
-0000076705 00000 n 
-0000076908 00000 n 
-0000090565 00000 n 
-0000091289 00000 n 
-0000091341 00000 n 
+0000092172 00000 n 
+0000092460 00000 n 
+0000092602 00000 n 
+0000011237 00000 n 
+0000011596 00000 n 
+0000011969 00000 n 
+0000012336 00000 n 
+0000012800 00000 n 
+0000012968 00000 n 
+0000013509 00000 n 
+0000013677 00000 n 
+0000014602 00000 n 
+0000014777 00000 n 
+0000015027 00000 n 
+0000015202 00000 n 
+0000015641 00000 n 
+0000015815 00000 n 
+0000016058 00000 n 
+0000016232 00000 n 
+0000016475 00000 n 
+0000016650 00000 n 
+0000017084 00000 n 
+0000017258 00000 n 
+0000034116 00000 n 
+0000035650 00000 n 
+0000034468 00000 n 
+0000036010 00000 n 
+0000023071 00000 n 
+0000022956 00000 n 
+0000017820 00000 n 
+0000092315 00000 n 
+0000034825 00000 n 
+0000036382 00000 n 
+0000035182 00000 n 
+0000036754 00000 n 
+0000023361 00000 n 
+0000023535 00000 n 
+0000023778 00000 n 
+0000023946 00000 n 
+0000024474 00000 n 
+0000024642 00000 n 
+0000025170 00000 n 
+0000025338 00000 n 
+0000026004 00000 n 
+0000026172 00000 n 
+0000026700 00000 n 
+0000026868 00000 n 
+0000027764 00000 n 
+0000027939 00000 n 
+0000037106 00000 n 
+0000034001 00000 n 
+0000028188 00000 n 
+0000035826 00000 n 
+0000036184 00000 n 
+0000036556 00000 n 
+0000036922 00000 n 
+0000037359 00000 n 
+0000037534 00000 n 
+0000037969 00000 n 
+0000038143 00000 n 
+0000038384 00000 n 
+0000038558 00000 n 
+0000038799 00000 n 
+0000038974 00000 n 
+0000039404 00000 n 
+0000039578 00000 n 
+0000043828 00000 n 
+0000045509 00000 n 
+0000044216 00000 n 
+0000045873 00000 n 
+0000044610 00000 n 
+0000046250 00000 n 
+0000045004 00000 n 
+0000046627 00000 n 
+0000040122 00000 n 
+0000040298 00000 n 
+0000040540 00000 n 
+0000040710 00000 n 
+0000041230 00000 n 
+0000041400 00000 n 
+0000046984 00000 n 
+0000043710 00000 n 
+0000041920 00000 n 
+0000045687 00000 n 
+0000046049 00000 n 
+0000046426 00000 n 
+0000046797 00000 n 
+0000047306 00000 n 
+0000047476 00000 n 
+0000048110 00000 n 
+0000048280 00000 n 
+0000048800 00000 n 
+0000048970 00000 n 
+0000049840 00000 n 
+0000050017 00000 n 
+0000056434 00000 n 
+0000056316 00000 n 
+0000050258 00000 n 
+0000056760 00000 n 
+0000056869 00000 n 
+0000057468 00000 n 
+0000057911 00000 n 
+0000069496 00000 n 
+0000069703 00000 n 
+0000078107 00000 n 
+0000078310 00000 n 
+0000091967 00000 n 
+0000092691 00000 n 
+0000092743 00000 n 
 trailer
 << /Size 142
 /Root 140 0 R
 /Info 141 0 R
-/ID [<B5ED4B5AB2C9D5ABD882A7FE28D9E122> <B5ED4B5AB2C9D5ABD882A7FE28D9E122>] >>
+/ID [<7FB5B22FDE5598B0B9B5B8967DA6CF0A> <7FB5B22FDE5598B0B9B5B8967DA6CF0A>] >>
 startxref
-91617
+93019
 %%EOF

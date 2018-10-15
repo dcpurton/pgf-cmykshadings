@@ -17,7 +17,7 @@
 \usepackage{tikz}
 \usepackage{parskip}
 
-\def\shadingssimple{%
+\def\testshadings{%
   \pgfdeclarehorizontalshading{myshadingA}
     {1cm}{rgb(0cm)=(1,0,0); color(2cm)=(green); color(4cm)=(blue)}
   \pgfuseshading{myshadingA}
@@ -39,9 +39,104 @@
      rgb(1cm)=(0.5,0,0);
      rgb(1.05cm)=(1,1,1)}
   \pgfuseshading{sphere}
-}
 
-\def\shadingsadvanced{%
+  \pgfdeclarefunctionalshading{twospots}
+      {\pgfpointorigin}{\pgfpoint{4cm}{4cm}}{}{
+    % Save coordinates for later
+    2 copy
+    % Compute distance from (40bp,45bp), with x doubled
+    45 sub dup mul exch
+    40 sub dup mul 0.5 mul add sqrt
+    % exponential decay
+    dup mul neg 1.0005 exch exp 1.0 exch sub
+    % Compute distance from (70bp,70bp) from stored coordinate, scaled
+    3 1 roll
+    70 sub dup mul .5 mul exch
+    70 sub dup mul add sqrt
+    % Decay
+    dup mul neg 1.002 exch exp 1.0 exch sub
+    % red component
+    1.0 3 1 roll
+    \ifpgfshadingmodelcmyk
+      \pgffuncshadingrgbtocmyk
+    \fi
+    \ifpgfshadingmodelgray
+      \pgffuncshadingrgbtogray
+    \fi
+  }
+  \pgfuseshading{twospots}
+
+  \pgfdeclarefunctionalshading[mycol]{sweep}{\pgfpoint{-1cm}{-1cm}}
+      {\pgfpoint{1cm}{1cm}}{\pgfshadecolortorgb{mycol}{\myrgb}}{
+    2 copy       % whirl
+    % Calculate "safe" atan of position
+    2 copy abs exch abs add 0.0001 ge { atan } { pop } ifelse
+    3 1 roll
+    dup mul exch
+    dup mul add sqrt
+    30 mul
+    add
+    sin
+    1 add 2 div
+    dup
+    \myrgb     % push mycol
+    5 4 roll   % multiply all components by calculated value
+    mul
+    3 1 roll
+    3 index
+    mul
+    3 1 roll
+    4 3 roll
+    mul
+    3 1 roll
+    \ifpgfshadingmodelcmyk
+      \pgffuncshadingrgbtocmyk
+    \fi
+    \ifpgfshadingmodelgray
+      \pgffuncshadingrgbtogray
+    \fi
+  }
+  \colorlet{mycol}{white}%
+  \pgfuseshading{sweep}%
+  \colorlet{mycol}{red}%
+  \pgfuseshading{sweep}
+
+  \pgfdeclarefunctionalshading[col1,col2,col3,col4]{bilinear interpolation}
+      {\pgfpointorigin}{\pgfpoint{100bp}{100bp}}
+      {
+      \pgfshadecolortorgb{col1}{\first}\pgfshadecolortorgb{col2}{\second}
+      \pgfshadecolortorgb{col3}{\third}\pgfshadecolortorgb{col4}{\fourth}
+      }{
+    100 div exch 100 div 2 copy                     % Calculate y/100 x/100.
+    neg 1 add exch neg 1 add                        % Calculate 1-y/100 1-x/100.
+    3 1 roll 2 copy exch 5 2 roll 6 copy 6 copy     % Set up stack.
+    \firstred mul exch \secondred mul add mul       % Process red component.
+    4 1 roll
+    \thirdred mul exch \fourthred mul add mul
+    add
+    13 1 roll
+    \firstgreen mul exch \secondgreen mul add mul   % Process green component.
+    4 1 roll
+    \thirdgreen mul exch \fourthgreen mul add mul
+    add
+    7 1 roll
+    \firstblue mul exch \secondblue mul add mul     % Process blue component.
+    4 1 roll
+    \thirdblue mul exch \fourthblue mul add mul
+    add
+    \ifpgfshadingmodelcmyk
+      \pgffuncshadingrgbtocmyk
+    \fi
+    \ifpgfshadingmodelgray
+      \pgffuncshadingrgbtogray
+    \fi
+  }
+  \colorlet{col1}{blue}
+  \colorlet{col2}{yellow}
+  \colorlet{col3}{red}
+  \colorlet{col4}{green}
+  \pgfuseshading{bilinear interpolation}
+
   \begin{pgfpicture}
     \pgfdeclareverticalshading{myshadingD}
       {20pt}{color(0pt)=(red); color(20pt)=(blue)}
@@ -137,275 +232,18 @@
 
 \section*{/DeviceCMYK shadings}
 
-\shadingssimple
-
-\pgfdeclarefunctionalshading{twospots}
-    {\pgfpointorigin}{\pgfpoint{4cm}{4cm}}{}{
-  % Save coordinates for later
-  2 copy
-  % magenta component
-  % Compute distance from (40bp,45bp), with x doubled
-  45 sub dup mul exch
-  40 sub dup mul 0.5 mul add sqrt
-  % exponential decay
-  dup mul neg 1.0005 exch exp 1.0 exch sub
-  1.0 exch sub
-  % yellow component
-  % Compute distance from (70bp,70bp) from stored coordinate, scaled
-  3 1 roll
-  70 sub dup mul .5 mul exch
-  70 sub dup mul add sqrt
-  % Decay
-  dup mul neg 1.002 exch exp 1.0 exch sub
-  1.0 exch sub
-  % cyan component
-  0.0 3 1 roll
-  % black component
-  0.0
-}
-\pgfuseshading{twospots}
-
-\pgfdeclarefunctionalshading[mycol]{sweep}{\pgfpoint{-1cm}{-1cm}}
-    {\pgfpoint{1cm}{1cm}}{\pgfshadecolortocmyk{mycol}{\mycmyk}}{
-  2 copy       % whirl
-  % Calculate "safe" atan of position
-  2 copy abs exch abs add 0.0001 ge { atan } { pop } ifelse
-  3 1 roll
-  dup mul exch
-  dup mul add sqrt
-  30 mul
-  add
-  sin
-  1 add 2 div
-  0.0 0.5 1.0
-  4 3 roll
-  1 exch sub
-  \mycmyk      % push mycol
-  5 4 roll
-  add dup 1.0 ge { pop 1.0 } { } ifelse
-}
-\colorlet{mycol}{white}%
-\pgfuseshading{sweep}%
-\colorlet{mycol}{red}%
-\pgfuseshading{sweep}
-
-\pgfdeclarefunctionalshading[col1,col2,col3,col4]{bilinear interpolation}
-    {\pgfpointorigin}{\pgfpoint{100bp}{100bp}}
-    {
-    \pgfshadecolortocmyk{col1}{\first}\pgfshadecolortocmyk{col2}{\second}
-    \pgfshadecolortocmyk{col3}{\third}\pgfshadecolortocmyk{col4}{\fourth}
-    }{
-  100 div exch 100 div 2 copy                        % Calculate y/100 x/100.
-  neg 1 add exch neg 1 add                           % Calculate 1-y/100 1-x/100.
-  3 1 roll 2 copy exch 5 2 roll 6 copy 6 copy 6 copy % Set up stack.
-  \firstcyan mul exch \secondcyan mul add mul        % Process cyan component.
-  4 1 roll
-  \thirdcyan mul exch \fourthcyan mul add mul
-  add
-  19 1 roll
-  \firstmagenta mul exch \secondmagenta mul add mul  % Process magenta component.
-  4 1 roll
-  \thirdmagenta mul exch \fourthmagenta mul add mul
-  add
-  13 1 roll
-  \firstyellow mul exch \secondyellow mul add mul    % Process yellow component.
-  4 1 roll
-  \thirdyellow mul exch \fourthyellow mul add mul
-  add
-  7 1 roll
-  \firstblack mul exch \secondblack mul add mul      % Process black component.
-  4 1 roll
-  \thirdblack mul exch \fourthblack mul add mul
-  add
-}
-\colorlet{col1}{blue}
-\colorlet{col2}{yellow}
-\colorlet{col3}{red}
-\colorlet{col4}{green}
-\pgfuseshading{bilinear interpolation}
-
-\shadingsadvanced
+\testshadings
 
 \selectcolormodel{rgb}
 
 \section*{/DeviceRGB shadings}
 
-\shadingssimple
-
-\pgfdeclarefunctionalshading{twospots}
-    {\pgfpointorigin}{\pgfpoint{4cm}{4cm}}{}{
-  % Save coordinates for later
-  2 copy
-  % Compute distance from (40bp,45bp), with x doubled
-  45 sub dup mul exch
-  40 sub dup mul 0.5 mul add sqrt
-  % exponential decay
-  dup mul neg 1.0005 exch exp 1.0 exch sub
-  % Compute distance from (70bp,70bp) from stored coordinate, scaled
-  3 1 roll
-  70 sub dup mul .5 mul exch
-  70 sub dup mul add sqrt
-  % Decay
-  dup mul neg 1.002 exch exp 1.0 exch sub
-  % red component
-  1.0 3 1 roll
-}
-\pgfuseshading{twospots}
-
-\pgfdeclarefunctionalshading[mycol]{sweep}{\pgfpoint{-1cm}{-1cm}}
-  {\pgfpoint{1cm}{1cm}}{\pgfshadecolortorgb{mycol}{\myrgb}}{
-  2 copy     % whirl
-  % Calculate "safe" atan of position
-  2 copy abs exch abs add 0.0001 ge { atan } { pop } ifelse
-  3 1 roll
-  dup mul exch
-  dup mul add sqrt
-  30 mul
-  add
-  sin
-  1 add 2 div
-  dup
-  \myrgb     % push mycol
-  5 4 roll   % multiply all components by calculated value
-  mul
-  3 1 roll
-  3 index
-  mul
-  3 1 roll
-  4 3 roll
-  mul
-  3 1 roll
-}
-\colorlet{mycol}{white}%
-\pgfuseshading{sweep}%
-\colorlet{mycol}{red}%
-\pgfuseshading{sweep}
-
-\pgfdeclarefunctionalshading[col1,col2,col3,col4]{bilinear interpolation}
-    {\pgfpointorigin}{\pgfpoint{100bp}{100bp}}
-    {
-    \pgfshadecolortorgb{col1}{\first}\pgfshadecolortorgb{col2}{\second}
-    \pgfshadecolortorgb{col3}{\third}\pgfshadecolortorgb{col4}{\fourth}
-    }{
-  100 div exch 100 div 2 copy                     % Calculate y/100 x/100.
-  neg 1 add exch neg 1 add                        % Calculate 1-y/100 1-x/100.
-  3 1 roll 2 copy exch 5 2 roll 6 copy 6 copy     % Set up stack.
-  \firstred mul exch \secondred mul add mul       % Process red component.
-  4 1 roll
-  \thirdred mul exch \fourthred mul add mul
-  add
-  13 1 roll
-  \firstgreen mul exch \secondgreen mul add mul   % Process green component.
-  4 1 roll
-  \thirdgreen mul exch \fourthgreen mul add mul
-  add
-  7 1 roll
-  \firstblue mul exch \secondblue mul add mul     % Process blue component.
-  4 1 roll
-  \thirdblue mul exch \fourthblue mul add mul
-  add
-}
-\colorlet{col1}{blue}
-\colorlet{col2}{yellow}
-\colorlet{col3}{red}
-\colorlet{col4}{green}
-\pgfuseshading{bilinear interpolation}
-
-\shadingsadvanced
+\testshadings
 
 \selectcolormodel{gray}
 
 \section*{/DeviceGray shadings}
 
-\shadingssimple
-
-\pgfdeclarefunctionalshading{twospots}
-    {\pgfpointorigin}{\pgfpoint{4cm}{4cm}}{}{
-  % Save coordinates for later
-  2 copy
-  % magenta component
-  % Compute distance from (40bp,45bp), with x doubled
-  45 sub dup mul exch
-  40 sub dup mul 0.5 mul add sqrt
-  % exponential decay
-  dup mul neg 1.0005 exch exp 1.0 exch sub
-  1.0 exch sub
-  % yellow component
-  % Compute distance from (70bp,70bp) from stored coordinate, scaled
-  3 1 roll
-  70 sub dup mul .5 mul exch
-  70 sub dup mul add sqrt
-  % Decay
-  dup mul neg 1.002 exch exp 1.0 exch sub
-  1.0 exch sub
-  % cyan component
-  0.0 3 1 roll
-  % convert to gray
-  0.11 mul exch 0.59 mul add exch 0.3 mul add
-  dup 1.0 ge { pop 1.0 } { } ifelse
-  1.0 exch sub
-}
-\pgfuseshading{twospots}
-
-\pgfdeclarefunctionalshading[mycol]{sweep}{\pgfpoint{-1cm}{-1cm}}
-  {\pgfpoint{1cm}{1cm}}{\pgfshadecolortogray{mycol}{\mygray}}{
-  2 copy     % whirl
-  % Calculate "safe" atan of position
-  2 copy abs exch abs add 0.0001 ge { atan } { pop } ifelse
-  3 1 roll
-  dup mul exch
-  dup mul add sqrt
-  30 mul
-  add
-  sin
-  1 add 2 div
-  \mygray     % push mycol
-  mul
-}
-\colorlet{mycol}{white}%
-\pgfuseshading{sweep}%
-\colorlet{mycol}{green}%
-\pgfuseshading{sweep}
-
-\pgfdeclarefunctionalshading[col1,col2,col3,col4]{bilinear interpolation}
-    {\pgfpointorigin}{\pgfpoint{100bp}{100bp}}
-    {
-    \pgfshadecolortocmyk{col1}{\first}\pgfshadecolortocmyk{col2}{\second}
-    \pgfshadecolortocmyk{col3}{\third}\pgfshadecolortocmyk{col4}{\fourth}
-    }{
-  100 div exch 100 div 2 copy                        % Calculate y/100 x/100.
-  neg 1 add exch neg 1 add                           % Calculate 1-y/100 1-x/100.
-  3 1 roll 2 copy exch 5 2 roll 6 copy 6 copy 6 copy % Set up stack.
-  \firstcyan mul exch \secondcyan mul add mul        % Process cyan component.
-  4 1 roll
-  \thirdcyan mul exch \fourthcyan mul add mul
-  add
-  19 1 roll
-  \firstmagenta mul exch \secondmagenta mul add mul  % Process magenta component.
-  4 1 roll
-  \thirdmagenta mul exch \fourthmagenta mul add mul
-  add
-  13 1 roll
-  \firstyellow mul exch \secondyellow mul add mul    % Process yellow component.
-  4 1 roll
-  \thirdyellow mul exch \fourthyellow mul add mul
-  add
-  7 1 roll
-  \firstblack mul exch \secondblack mul add mul      % Process black component.
-  4 1 roll
-  \thirdblack mul exch \fourthblack mul add mul
-  add
-  % convert to gray
-  exch 0.11 mul add exch 0.59 mul add exch 0.3 mul add
-  dup 1.0 ge { pop 1.0 } { } ifelse
-  1.0 exch sub
-}
-\colorlet{col1}{blue}
-\colorlet{col2}{yellow}
-\colorlet{col3}{red}
-\colorlet{col4}{green}
-\pgfuseshading{bilinear interpolation}
-
-\shadingsadvanced
+\testshadings
 
 \end{document}

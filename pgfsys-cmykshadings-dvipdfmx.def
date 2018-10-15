@@ -27,11 +27,10 @@
 %% Copyright (c) 2006 Till Tantau and then slightly modified to output CMYK
 %% gradients instead of RGB ones.
 %%
-\ProvidesFile{pgfsys-cmykshadings-dvipdfmx.def}[2018/10/13 CMYK shadings support for PGF dvipdfmx driver (DCP)]
+\ProvidesFile{pgfsys-cmykshadings-dvipdfmx.def}[2018/10/15 CMYK shadings support for PGF dvipdfmx driver (DCP)]
 
 \def\pgfsys@horishading#1#2#3{%
   {%
-    \pgf@setup@model
     \pgf@parsefunc{#3}%
     \pgfmathparse{#2}%
     \pgf@process{\pgfpoint{\pgf@max}{#2}}%
@@ -57,7 +56,6 @@
 
 \def\pgfsys@vertshading#1#2#3{%
   {%
-    \pgf@setup@model
     \pgf@parsefunc{#3}%
     \pgfmathparse{#2}%
     \pgf@process{\pgfpoint{\pgf@max}{#2}}%
@@ -83,7 +81,6 @@
 
 \def\pgfsys@radialshading#1#2#3{%
   {%
-    \pgf@setup@model
     \pgf@parsefunc{#3}%
     \pgf@process{#2}%
     \pgf@xa=\pgf@x%
@@ -118,7 +115,6 @@
 
 \def\pgfsys@functionalshading#1#2#3#4{%
   {%
-    \pgf@setup@model
     \pgf@process{#2}%
     \pgf@xa=\pgf@x%
     \pgf@ya=\pgf@y%

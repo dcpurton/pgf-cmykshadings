@@ -27,13 +27,20 @@
 %% Copyright (c) 2006 Till Tantau and then slightly modified to output CMYK
 %% gradients instead of RGB ones.
 %%
-\ProvidesPackage{pgf-cmykshadings}[2018/10/13 CMYK shadings support for PGF (DCP)]
+\ProvidesPackage{pgf-cmykshadings}[2018/10/15 CMYK shadings support for PGF (DCP)]
 
 \RequirePackage{pgf}
 
 % set up colour model variables based on current xcolor colour model
 
+\newif\ifpgfshadingmodelrgb
+\newif\ifpgfshadingmodelcmyk
+\newif\ifpgfshadingmodelgray
+
 \def\pgf@setup@model{%
+  \pgfshadingmodelrgbtrue
+  \pgfshadingmodelcmykfalse
+  \pgfshadingmodelgrayfalse
   \XC@sdef\pgf@mod@test{\XC@tgt@mod{natural}}%
   \def\pgf@shading@functional@range{0 1 0 1 0 1}%
   \def\pgf@shading@device{/DeviceRGB}%
@@ -43,6 +50,8 @@
       \def\pgf@shading@functional@range{0 1 0 1 0 1 0 1}%
       \def\pgf@shading@device{/DeviceCMYK}%
       \def\pgf@shading@model{cmyk}%
+      \pgfshadingmodelrgbfalse
+      \pgfshadingmodelcmyktrue
     \else
       \def\pgf@shading@functional@range{0 1 0 1 0 1}%
       \def\pgf@shading@device{/DeviceRGB}%
@@ -53,11 +62,15 @@
     \def\pgf@shading@functional@range{0 1 0 1 0 1 0 1}%
     \def\pgf@shading@device{/DeviceCMYK}%
     \def\pgf@shading@model{cmyk}%
+      \pgfshadingmodelrgbfalse
+      \pgfshadingmodelcmyktrue
   \fi
   \ifx\pgf@mod@test\XC@mod@gray
     \def\pgf@shading@functional@range{0 1}%
     \def\pgf@shading@device{/DeviceGray}%
     \def\pgf@shading@model{gray}%
+      \pgfshadingmodelrgbfalse
+      \pgfshadingmodelgraytrue
   \fi
 }
 
@@ -351,8 +364,17 @@
   \pgf@xa=#1pt%
 }
 
+\def\pgfdeclarehorizontalshading{\pgf@setup@model\pgfutil@ifnextchar[\pgf@declarehorizontalshading{\pgf@declarehorizontalshading[]}}%
+
+\def\pgfdeclareverticalshading{\pgf@setup@model\pgfutil@ifnextchar[\pgf@declareverticalshading{\pgf@declareverticalshading[]}}%
+
+\def\pgfdeclareradialshading{\pgf@setup@model\pgfutil@ifnextchar[\pgf@declareradialshading{\pgf@declareradialshading[]}}%
+
+\def\pgfdeclarefunctionalshading{\pgf@setup@model\pgfutil@ifnextchar[\pgf@declarefunctionalshading{\pgf@declarefunctionalshading[]}}%
+
 \def\pgfuseshading#1{%
   \edef\pgf@shadingname{@pgfshading#1}%
+  \edef\pgf@shadingsavedmodel{@pgfshading#1@model}%
   \pgf@tryextensions{\pgf@shadingname}{\pgfalternateextension}%
   \expandafter\pgfutil@ifundefined\expandafter{\pgf@shadingname}%
   {\pgferror{Undefined shading "#1"}}%
@@ -369,7 +391,9 @@
           {%
             \pgfutil@ifundefined{applycolormixins}{}{\applycolormixins{\@temp}}%
             \pgfutil@extractcolorspec{\@temp}{\pgf@tempcolor}%
-            \expandafter\pgfutil@convertcolorspec\pgf@tempcolor{\pgf@shading@model}{\pgf@color}%
+            \expandafter\pgfutil@ifundefined\expandafter{\pgf@shadingsavedmodel}
+              {\expandafter\pgfutil@convertcolorspec\pgf@tempcolor{\pgf@shading@model}{\pgf@color}}%
+              {\expandafter\pgfutil@convertcolorspec\pgf@tempcolor{\pgf@shadingsavedmodel}{\pgf@color}}%
             \xdef\pgf@shade@adds{\pgf@shade@adds,\pgf@color}%
           }%
         }%
@@ -391,6 +415,69 @@
       \pgf@invokeshading{\csname @pgfshading\pgf@basename\pgf@shade@adds!\endcsname}%
     }%
   }%
+}
+
+% colour model converters for functional shading PostScript code using the same
+% algorithms as xcolor (i.e., not colour managed)
+
+\def\pgffuncshadingrgbtocmyk{%
+  1.0 exch sub 3 1 roll
+  1.0 exch sub 3 1 roll
+  1.0 exch sub 3 1 roll
+  3 copy
+  2 copy gt { exch } if pop
+  2 copy gt { exch } if pop
+  dup 3 1 roll sub
+  0.0 2 copy lt { exch } if pop
+  1.0 2 copy gt { exch } if pop
+  4 1 roll
+  dup 3 1 roll sub
+  0.0 2 copy lt { exch } if pop
+  1.0 2 copy gt { exch } if pop
+  4 1 roll
+  dup 3 1 roll sub
+  0.0 2 copy lt { exch } if pop
+  1.0 2 copy gt { exch } if pop
+  4 1 roll
+}
+
+\def\pgffuncshadingrgbtogray{%
+  0.11 mul exch 0.59 mul add exch 0.3 mul add
+}
+
+\def\pgffuncshadingcmyktorgb{%
+  % covert to CMY
+  dup 3 1 roll add
+  1.0 2 copy gt { exch } if pop
+  4 1 roll
+  dup 3 1 roll add
+  1.0 2 copy gt { exch } if pop
+  4 1 roll
+  add
+  1.0 2 copy gt { exch } if pop
+  3 1 roll
+  % covert to RGB
+  1.0 exch sub
+  3 1 roll
+  1.0 exch sub
+  3 1 roll
+  1.0 exch sub
+  3 1 roll
+}
+ 
+\def\pgffuncshadingcmyktogray{%
+  exch 0.11 mul add exch 0.59 mul add exch 0.3 mul add
+  1.0 2 copy gt { exch } if pop
+  1.0 exch sub
+}
+
+\def\pgffuncshadinggraytorgb{%
+  dup dup
+}
+
+\def\pgffuncshadinggraytocmyk{%
+  0.0 0.0 0.0
+  4 3 roll
 }
 
 % load the correct driver

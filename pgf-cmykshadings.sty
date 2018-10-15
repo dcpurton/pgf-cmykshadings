@@ -46,7 +46,7 @@
   \def\pgf@shading@device{/DeviceRGB}%
   \def\pgf@shading@model{rgb}%
   \ifx\pgf@mod@test\XC@mod@natural
-    \ifpgf@cmykshading@default
+    \ifpgfcmykshadingdefault
       \def\pgf@shading@functional@range{0 1 0 1 0 1 0 1}%
       \def\pgf@shading@device{/DeviceCMYK}%
       \def\pgf@shading@model{cmyk}%
@@ -496,14 +496,14 @@
 % style options to use CMYK gradients by default or not when the selected
 % xcolor model is natural
 
-\newif\ifpgf@cmykshading@default
+\newif\ifpgfcmykshadingdefault
 
 \DeclareOption{cmyk}{%
-  \pgf@cmykshading@defaulttrue
+  \pgfcmykshadingdefaulttrue
 }
 
 \DeclareOption{rgb}{%
-  \pgf@cmykshading@defaultfalse
+  \pgfcmykshadin@defaultfalse
 }
 
 \ExecuteOptions{cmyk}

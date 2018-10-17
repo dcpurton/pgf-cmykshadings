@@ -1,6 +1,6 @@
-# pgf-cmykshadings — Support for CMYK shadings in PGF
+# pgf-cmykshadings — Support for CMYK and grayscale shadings in PGF/TikZ
 
-Th `pgf-cmykshadings` package provides support for CMYK and grayscale shadings
+The `pgf-cmykshadings` package provides support for CMYK and grayscale shadings
 for the `pgf` package. By default `pgf` only supports RGB shadings. Horizontal,
 vertical, radial, and functional shadings are supported for PDFLaTeX, LuaLaTeX,
 and XeLaTeX. `pgf-cmykshadings` attempts to produce shadings consistent with

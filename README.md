@@ -78,7 +78,7 @@ kpsewhich -var-value=TEXMFHOME
 Copyright (c) 2018 David Purton <dcpurton@marshwiggle.net>
 
 This work may be distributed and/or modified under the conditions of
-the LaTeX Project2 Public License, either version 1.3c of this license
+the LaTeX Project Public License, either version 1.3c of this license
 or (at your option) any later version. The latest version of this
 license is in
    http://www.latex-project.org/lppl.txt
@@ -88,17 +88,20 @@ version 2005/12/01 or later.
 This work is "maintained" (as per the LPPL maintenance status)
 by David Purton.
 
-This work consists of the file style file pgf-cmykshadings.sty and the
-driver files:
+This work consists of the files pgf-cmykshadings.ins,
+pgf-cmykshadings.dtx, README.md, and the derived files
+  - pgf-cmykshadings.sty
   - pgfsys-cmykshadings-pdftex.def
-  - pgfsys-cmykshadings-xetex.def
+  - pgfsys-cmykshadgins-xetex.def
   - pgfsys-cmykshadings-luatex.def
-  - pgfsys-cmykshadings-divpdfmx.def
+  - pgfsys-cmykshadings-dvipdfmx.def
+  - pgf-cmykshadings.pdf
 
 
-All code in these files is taken from the PGF files pgfcoreshade.code.tex,
-pgfsys-pdftex.def, pgfsys-dvipdfmx.def, and pgfsys-luatex.def
-Copyright (c) 2006 Till Tantau and then slightly modified to output CMYK
-gradients instead of RGB ones.
+Substantial parts of the code for this package are taken from the pgf
+package files pgfcoreshade.code.tex, pgfsys-pdftex.def,
+pgfsys-luatex.def, and pgfsys-dvipdfmx.def copyright (c) 2006 Till
+Tantau and then slightly modified to support CMYK and grayscale
+shadings.
 ```
 

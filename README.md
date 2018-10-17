@@ -2,7 +2,7 @@
 
 The `pgf-cmykshadings` package provides support for CMYK and grayscale shadings
 for the `pgf` package. By default `pgf` only supports RGB shadings. Horizontal,
-vertical, radial, and functional shadings are supported for PDFLaTeX, LuaLaTeX,
+vertical, radial, and functional shadings are supported for pdfLaTeX, LuaLaTeX,
 and XeLaTeX. `pgf-cmykshadings` attempts to produce shadings consistent with
 the currently selected `xcolor` colour model. The `rgb`, `cmyk`, and `gray`
 colour models from the `xcolor` package are supported.

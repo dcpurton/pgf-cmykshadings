@@ -1,63 +1,76 @@
-# pgf-cmykshadings — Support for CMYK shadings in PGF/TikZ
+# pgf-cmykshadings — Support for CMYK shadings in PGF
 
-The `pgf-cmykshadings` package provides support for CMYK shadings in PGF/TikZ.
+Th `pgf-cmykshadings` package provides support for CMYK and grayscale shadings
+for the `pgf` package. By default `pgf` only supports RGB shadings. Horizontal,
+vertical, radial, and functional shadings are supported for PDFLaTeX, LuaLaTeX,
+and XeLaTeX. `pgf-cmykshadings` attempts to produce shadings consistent with
+the currently selected `xcolor` colour model. The `rgb`, `cmyk`, and `gray`
+colour models from the `xcolor` package are supported.
 
-It will only work with `pdflatex`, `lualatex`, and `xelatex`.
+## Installation from TeXLive or MiKTeX
 
-## Usage
+`pgf-cmykshadings` is in TeXLive and MiKTeX and can be installed in the usual
+way through your distribution. e.g., in TeXLive by running:
 
-Just add `\usepackage{pgf-cmykshadings}` to your document preamble.
+```
+tlmgr install pgf-cmykshadings
+```
 
-### Colour models
+## Installation from CTAN
 
-`pgf-cmykshadings` tries to produce shadings consistent with the currently
-selected `xcolor` colour model. `rgb`, `cmyk`, and `gray` are supported.
+Download and unpack `pgf-cmykshadings.zip` from CTAN at
+https://ctan.org/pkg/pgf-cmykshadings
 
-**Note:** The colour model chosen for a shading is the based on the `xcolor`
-colour model *at the time the shading is created*. This is either when
-`\pgfdeclare*shading` is called with no optional argument or when
-`\pgfuseshading` is called if `\pgfdeclare*shading` was called with an optional
-argument.
+Change to the `pgf-cmykshadings` directory, then run:
 
-If the `xcolor` `natural` colour model is in use then the shading colour model
-will be `cmyk` by default (equivalent to passing the `cmyk` option to the
-`pgf-cmykshadings` package). `rgb` shadings can be output instead by passing
-the `rgb` option to the `pgf-cmykshadings` package.
+```
+tex pgf-cmykshadings.ins
+```
 
-In practice this means that if you are using the `natural` colour model of
-`xcolor` you can still get mismatched colours if you, for example, create a
-shading from green (which is defined as RGB) to cyan (which is defined as
-CMYK). The shading has to pick one colour model and will look different to one
-of the solid colours.
+to generate `pgf-cmykshadigns.sty`, `pgfsys-cmykshadings-pdftex.def`,
+`pgfsys-cmykshadings-xetex.def`, `pgfsys-cmykshadings-luatex.def`, and
+`pgfsys-cmykshadings-dvipdfmx.def`.
 
-It is recommended to always load `xcolor` before `pgf-cmykshadings` with either
-the `rgb`, `cmyk`, or `gray` options to avoid colour surprises.
+Copy these generated files to `$TEXMFHOME/tex/latex/pgf-cmykshadings/` and
+`pgf-cmykshadings.pdf` to `$TEXMFHOME/doc/latex/pgf-cmykshadings/`.
 
-### Load order
+You can find `$TEXMFHOME` by running:
 
-- `pgf-cmykshadings` should be loaded *before* any shadings are defined
-  otherwise these will be defined as RGB. This means you should load
-  `pgf-cmykshadings` before (for example) `tikz` and `beamer`.
-- If you want to pass custom options to `xcolor` (e.g., a colour model or set
-  of named colours), you should load `pgf-cmykshadings` *after* `xcolor` or use
-  `\PassOptionsToPackage{...}{xcolor}` before loading `pgf-cmykshadings`.
+```
+kpsewhich -var-value=TEXMFHOME
+```
 
-### General (functional) shadings
+## Installation from Git Source
 
-By nature, the PostScript® code used to generate functional shadings must
-output either RGB or CMYK data. For this reason, `\pgfdeclarefunctionalshading`
-is *not* portable across colour models.
+`pgf-cmykshadings` uses the `l3build` system.
 
-Take particular care that the *same* colour model is in use at declaration time
-and use time for functional shadings declared with an optional argument as
-otherwise the PostScript® data will not match the declared colour space and you
-will end up with a malformed PDF.
+Clone the git repository using:
 
-This also means that you should *not* use the functional shadings from the
-`tikz` shading library (`bilinear interpolation`, `color wheel`, `color wheel
-black center`, `color wheel white center`, and `Mandelbrot set`) except when
-the `xcolor` RGB model is in use, otherwise you will end up with a malformed
-PDF.
+```
+git clone https://github.com/dcpurton/pgf-cmykshadings.git
+```
+
+Change to the `pgf-cmykshadings` directory, and then the package can be
+installed by running:
+
+```
+l3build install
+```
+
+Documentation (`pgf-cmykshadings.pdf`) can be compiled by running:
+
+```
+l3build doc
+```
+
+To install the documentation, copy `pgf-cmykshadings.pdf` to
+`$TEXMFHOME/doc/latex/pgf-cmykshadings/`.
+
+You can find `$TEXMFHOME` by running:
+
+```
+kpsewhich -var-value=TEXMFHOME
+```
 
 ## Licence
 

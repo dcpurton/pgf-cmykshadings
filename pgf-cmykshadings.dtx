@@ -1,0 +1,1582 @@
+% \iffalse meta-comment
+%
+%Copyright (c) 2018 David Purton <dcpurton@marshwiggle.net>
+%
+%This work may be distributed and/or modified under the conditions of
+%the LaTeX Project Public License, either version 1.3c of this license
+%or (at your option) any later version. The latest version of this
+%license is in
+%   http://www.latex-project.org/lppl.txt
+%and version 1.3c or later is part of all distributions of LaTeX
+%version 2005/12/01 or later.
+%
+%<*driver>
+\documentclass[a4paper]{l3doc}
+\usepackage{microtype}
+\usepackage{metalogo}
+\usepackage{pgf-cmykshadings}
+\usepackage{tikz}
+\usepackage{listings}
+\lstset{frame=single,basicstyle=\footnotesize\ttfamily}
+\begin{document}
+\DocInput{\jobname.dtx}
+\end{document}
+%</driver>
+% \fi
+%
+% \changes{v1.0}{2018/10/15}{First public release}
+%
+% \title{The \pkg{pgf-cmykshadings} package}
+% \author{David Purton\thanks{Email: \url{dcpurton@marshwiggle.net}}}
+% \date{2018/10/15 v1.0}
+%
+% \maketitle
+%
+% \begin{abstract}
+%   This \pkg{pgf-cmykshadings} provides support for CMYK and grayscale shadings
+%   for the \pkg{pgf} package. By default \pkg{pgf} only supports RGB shadings.
+%   Horizontal, vertical, radial, and functional shadings are supported for
+%   PDF\LaTeX, \LuaLaTeX, and \XeLaTeX. \pkg{pgf-shadings} attempts to produce
+%   shadings consistent with the currently selected \pkg{xcolor} colour model.
+%   The |rgb|, |cmyk|, and |gray| colour models from the \pkg{xcolor} package
+%   are supported.
+% \end{abstract}
+%
+% \tableofcontents
+%
+% \begin{documentation}
+%
+% \section{Introduction}
+%
+% The \pkg{pgf} package, and other packages built on top of it, only support RGB
+% shadings (colour gradients). This means that printing applications requiring
+% CMYK shadings can not easily be produced. It also can lead to unexpected
+% colour mismatches in documents when attempting to define a shading from
+% colours defined in CMYK. This can occur when the |natural| colour model of the
+% \pkg{xcolor} package is in use and colours like cyan and magenta are defined
+% as CMYK. An attempt to produce a shading using these colours will be
+% silently converted to RGB, but RGB cyan and RGB magenta look significantly
+% different from CMYK cyan and magenta. This is a significant cause of
+% confusion for end users.
+%
+% The following example illustrates this problem and the corresponding solution
+% provided by the \pkg{pgf-cmykshadings} package.
+%
+% \begin{quote}
+% \iffalse
+%<*example>
+% \fi
+\begin{lstlisting}
+\begin{tikzpicture}
+  \fill[cyan] (0,0) rectangle (1,1);
+  \shade[left color=cyan, right color=magenta]
+    (1.25,0) rectangle (3.75,1);
+  \fill[magenta] (4,0) rectangle (5,1);
+\end{tikzpicture}
+\end{lstlisting}
+% \iffalse
+%</example>
+% \fi
+%
+%   \begin{minipage}{0.45\linewidth}
+%   \pkg{pgf} behaviour:\medskip
+%
+%   \pgfcmykshadingdefaultfalse
+%   \begin{tikzpicture}
+%     \fill[cyan] (0,0) rectangle (1,1);
+%     \shade[left color=cyan, right color=magenta]
+%       (1.25,0) rectangle (3.75,1);
+%     \fill[magenta] (4,0) rectangle (5,1);
+%   \end{tikzpicture}
+%   \end{minipage}\hfill
+%   \begin{minipage}{0.45\linewidth}
+%   \pkg{pgf-cmykshadings} behaviour:\medskip
+%
+%   \pgfcmykshadingdefaulttrue
+%   \begin{tikzpicture}
+%     \fill[cyan] (0,0) rectangle (1,1);
+%     \shade[left color=cyan, right color=magenta]
+%       (1.25,0) rectangle (3.75,1);
+%     \fill[magenta] (4,0) rectangle (5,1);
+%   \end{tikzpicture}
+%   \end{minipage}
+% \end{quote}
+%
+% \section{Acknowledgements}
+%
+% Substantial parts of the code for the \pkg{pgf-cmykshadings} package are
+% taken from the \pkg{pgf} package files |pgfcoreshade.code.tex|,
+% |pgfsys-pdftex.def|, |pgfsys-dvipdfmx.def|, and |pgfsys-luatex.def| copyright
+% © 2006 Till Tantau and then slightly modified to support CMYK and grayscale
+% shadings.
+%
+% \section{Bug Reports and Feature Requests}
+%
+% Bug reports and feature requests can be made at the \pkg{pgf-cmykshadings}
+% package GitHub respoitory. See
+% \url{https://github.com/dcpurton/pgf-cmykshadings}.
+%
+% \section{Documentation}
+%
+% \subsection{Basic Usage}
+%
+% All that is required to use CMYK shadings instead of RGB shadings is to
+% include the package in your document preamble:
+% \begin{quote}
+% \iffalse
+%<*example>
+% \fi
+\begin{lstlisting}
+\usepackage{pgf-cmykshadings}
+\end{lstlisting}
+% \iffalse
+%</example>
+% \fi
+% \end{quote}
+% However, there are some caveats in using the package, which are outlined
+% below.
+%
+% \subsubsection{Package options}
+%
+% \pkg{pgd-cmykshadings} supports the following package options:
+%
+% \begin{description}
+%   \item[\mdseries |cmyk|] (default) to use CMYK shadings when the \pkg{xcolor}
+%     package |natural| colour model is in use.
+%   \item[\mdseries |rgb|] to use the RGB shadings when the \pkg{xcolor} package
+%     |natural| colour model is in use.
+% \end{description}
+%
+% \subsubsection{Load order}
+%
+% \pkg{pgf-cmykshadings} should be loaded \emph{before} any shadings are defined
+% otherwise these will be defined as RGB. This means you should load
+% \pkg{pgf-cmykshadings} before (for example) \pkg{tikz} and \pkg{beamer}.
+%
+% If you want to pass custom options to \pkg{xcolor} (e.g., a colour model or
+% set of named colours), you should load \pkg{pgf-cmykshadings} \emph{after}
+% \pkg{xcolor} or use \cs{PassOptionsToPackage} \emph{before} loading
+% \pkg{pgf-cmykshadings}.
+%
+% \subsubsection{Colour models}
+%
+% \pkg{pgf-cmykshadings} attempts to produce shadings consistent with the
+% currently selected \pkg{xcolor} package colour model. The |rgb|, |cmyk|, and
+% |gray| colour models from the \pkg{xcolor} package are supported.
+%
+% \textbf{Note:} The colour model chosen for a shading is based on the
+% \pkg{xcolor} colour model \emph{at the time the shading is created}. This is
+% either when \cs{pgfdeclare*shading} is called with no optional argument or
+% when \cs{pgfuseshading} is called if \cs{pgfdeclare*shading} was called with
+% an optional argument.
+%
+% If the \pkg{xcolor} package |natural| colour model is in use then the shading
+% colour model will be CMYK by default (equivalent to passing the |cmyk| option
+% to the \pkg{pgf-cmykshadings} package). RGB shadings can be output by default
+% instead by passing the |rgb| option to the \pkg{pgf-cmykshadings} package.
+%
+% In practice this means that if you are using the |natural| colour model of the
+% \pkg{xcolor} package you can still get mismatched colours if you, for example,
+% create a shading from green (which is defined as RGB) to magenta (which is
+% defined as CMYK). The shading has to pick one colour model and will look
+% different to one of the solid colours.
+%
+% For this reason it is recommended to always load the \pkg{xcolor} package
+% before the \pkg{pgf-cmykshadings} package with either the |rgb|, |cmyk|, or
+% |gray| options to avoid colour surprises.
+%
+% \begin{quote}
+% \iffalse
+%<*example>
+% \fi
+\begin{lstlisting}
+\begin{tikzpicture}
+  \fill[green] (0,0) rectangle (1,1);
+  \shade[left color=green, right color=magenta]
+    (1.25,0) rectangle (3.75,1);
+  \fill[magenta] (4,0) rectangle (5,1);
+\end{tikzpicture}
+\end{lstlisting}
+% \iffalse
+%</example>
+% \fi
+%
+%   \begin{minipage}{0.45\linewidth}
+%   \pkg{xcolor} |natural| colour model:\medskip
+%
+%   \begin{tikzpicture}
+%     \fill[green] (0,0) rectangle (1,1);
+%     \shade[left color=green, right color=magenta]
+%       (1.25,0) rectangle (3.75,1);
+%     \fill[magenta] (4,0) rectangle (5,1);
+%   \end{tikzpicture}
+%   \end{minipage}\hfill
+%   \begin{minipage}{0.45\linewidth}
+%   \pkg{xcolor} |cmyk| colour model:\medskip
+%
+%   \selectcolormodel{cmyk}
+%   \begin{tikzpicture}
+%     \fill[green] (0,0) rectangle (1,1);
+%     \shade[left color=green, right color=magenta]
+%       (1.25,0) rectangle (3.75,1);
+%     \fill[magenta] (4,0) rectangle (5,1);
+%   \end{tikzpicture}
+%   \end{minipage}\medskip
+%
+%   \begin{minipage}{0.45\linewidth}
+%   \pkg{xcolor} |rgb| colour model:\medskip
+%
+%   \selectcolormodel{rgb}
+%   \begin{tikzpicture}
+%     \fill[green] (0,0) rectangle (1,1);
+%     \shade[left color=green, right color=magenta]
+%       (1.25,0) rectangle (3.75,1);
+%     \fill[magenta] (4,0) rectangle (5,1);
+%   \end{tikzpicture}
+%   \end{minipage}\hfill
+%   \begin{minipage}{0.45\linewidth}
+%   \pkg{xcolor} |gray| colour model:\medskip
+%
+%   \selectcolormodel{gray}
+%   \begin{tikzpicture}
+%     \fill[green] (0,0) rectangle (1,1);
+%     \shade[left color=green, right color=magenta]
+%       (1.25,0) rectangle (3.75,1);
+%     \fill[magenta] (4,0) rectangle (5,1);
+%   \end{tikzpicture}
+%   \end{minipage}
+% \end{quote}
+%
+% \subsubsection{Functional shadings}
+%
+% By nature, the PostScript® code used to generate functional shadings must
+% output either RGB or CMYK data. For this reason,
+% \cs{pgfdeclarefunctionalshading} is \emph{not} portable across colour models.
+%
+% Take particular care that the same colour model is in use at declaration time
+% and use time for functional shadings declared with an optional argument as
+% otherwise the PostScript® data will not match the declared colour space and
+% you will end up with a malformed PDF.
+%
+% This also means that you should \emph{not} use the functional shadings from
+% the \pkg{tikz} shading library (|bilinear interpolation|, |color wheel|,
+% |color wheel black center|, |color wheel white center|, and |Mandelbrot set|)
+% except when the \pkg{xcolor} |rgb| colour model is in use, otherwise you will
+% end up with a malformed PDF.
+%
+% Having said this, it \emph{is} possible to create portable functional shadings
+% by providing conditional code to append colour transformations to the
+% PostScript® data. A variety of \cs{pgffuncshading*to*} (e.g.,
+% \cs{pgffuncshadingrgbtocmyk}) macros along with \cs{ifpgfshadingmodel*} (e.g.,
+% \cs{ifpgfshadingmodelcmyk}) conditionals are provided to assist with these
+% transformations.
+%
+% \begin{quote}
+% \iffalse
+%<*example>
+% \fi
+\begin{lstlisting}
+\pgfdeclarefunctionalshading[black]{twospots}
+    {\pgfpointorigin}{\pgfpoint{3.5cm}{3.5cm}}{}{
+  2 copy
+  45 sub dup mul exch
+  40 sub dup mul 0.5 mul add sqrt
+  dup mul neg 1.0005 exch exp 1.0 exch sub
+  3 1 roll
+  70 sub dup mul .5 mul exch
+  70 sub dup mul add sqrt
+  dup mul neg 1.002 exch exp 1.0 exch sub
+  1.0 3 1 roll
+  \ifpgfshadingmodelcmyk
+    \pgffuncshadingrgbtocmyk
+  \fi
+  \ifpgfshadingmodelgray
+    \pgffuncshadingrgbtogray
+  \fi
+}
+\end{lstlisting}
+% \iffalse
+%</example>
+% \fi
+%
+% \pgfdeclarefunctionalshading[black]{twospots}
+%     {\pgfpointorigin}{\pgfpoint{3.5cm}{3.5cm}}{}{
+%   2 copy
+%   45 sub dup mul exch
+%   40 sub dup mul 0.5 mul add sqrt
+%   dup mul neg 1.0005 exch exp 1.0 exch sub
+%   3 1 roll
+%   70 sub dup mul .5 mul exch
+%   70 sub dup mul add sqrt
+%   dup mul neg 1.002 exch exp 1.0 exch sub
+%   1.0 3 1 roll
+%   \ifpgfshadingmodelcmyk
+%     \pgffuncshadingrgbtocmyk
+%   \fi
+%   \ifpgfshadingmodelgray
+%     \pgffuncshadingrgbtogray
+%   \fi
+% }
+%
+% \begin{minipage}{0.3\linewidth}
+%   \pkg{xcolor} |cmyk| model:\medskip
+%
+%   \selectcolormodel{cmyk}
+%   \pgfuseshading{twospots}
+% \end{minipage}\hfill
+% \begin{minipage}{0.3\linewidth}
+%   \pkg{xcolor} |rgb| model:\medskip
+%
+%   \selectcolormodel{rgb}
+%   \pgfuseshading{twospots}
+% \end{minipage}\hfill
+% \begin{minipage}{0.3\linewidth}
+%   \pkg{xcolor} |gray| model:\medskip
+%
+%   \selectcolormodel{gray}
+%   \pgfuseshading{twospots}
+% \end{minipage}
+% \end{quote}
+%
+%
+% \subsection{Main Interface}
+%
+% \subsubsection{Declaring shadings}
+%
+% The four standard \pkg{pgf} functions for declaring shadings are supported
+% as documented in the \pkg{pgf} manual.
+%
+% There is one extension provided by the \pkg{pgf-cmykshadings} package. It is
+% possible to specify CMYK colours directly in the colour specification
+% argument using a syntax analogous to the RGB, Gray, and named colours
+% already supported by the \pkg{pgf} package. i.e.,
+% |cmyk(|\meta{position}|)=(|\meta{C}|,|\meta{M}|,|\meta{Y}|,|\meta{K}|)|.
+%
+% Shadings declared \emph{without} an optional argument are created
+% immediately in the currently active \pkg{xcolor} colour model. Shadings
+% declared \emph{with} and optional argument are created at the time they are
+% actually used (using \cs{pgfuseshading}).
+%
+% \begin{function}{\pgfdeclarehorizontalshading}
+%   \begin{syntax}
+%     \cs{pgfdeclarehorizontalshading}\oarg{color list}\marg{shading name}\marg{shading height}\marg{color specification}
+%   \end{syntax}
+%   Declare a horizontal shading.
+% \end{function}
+%
+% \begin{function}{\pgfdeclareverticalshading}
+%   \begin{syntax}
+%     \cs{pgfdeclareverticalshading}\oarg{color list}\marg{shading name}\marg{shading width}\marg{color specification}
+%   \end{syntax}
+%   Declare a vertical shading.
+% \end{function}
+%
+% \begin{function}{\pgfdeclareradialshading}
+%   \begin{syntax}
+%     \cs{pgfdeclareradialshading}\oarg{color list}\marg{shading name}\marg{center point}\marg{color specification}
+%   \end{syntax}
+%   Declare a radial shading.
+% \end{function}
+%
+% \begin{function}{\pgfdeclarefunctionalshading}
+%   \begin{syntax}
+%     \cs{pgfdeclarefunctionalshading}\oarg{color list}\marg{shading name}\marg{lower left corner}\marg{upper right corner}\marg{init code}\marg{type 4 function}
+%   \end{syntax}
+%   Declare a functional shading.
+% \end{function}
+%
+% \subsubsection{Using shadings}
+%
+% Shadings are used as documented in the \pkg{pgf} manual.
+%
+% \begin{function}{\pgfuseshading}
+%   \begin{syntax}
+%     \cs{pgfuseshading}\marg{shading name}
+%   \end{syntax}
+%   Use a previously declared shading. If the specified shading was declared
+%   with an optional argument, then the shading will be created at this point
+%   in the currently active \pkg{xcolor} colour space.
+% \end{function}
+%
+% \begin{function}{\pgfshadepath}
+%   \begin{syntax}
+%     \cs{pgfshadepath}\marg{shading name}\marg{angle}
+%   \end{syntax}
+%   Shade the currently active \pkg{pgf} path using the specified shading at
+%   the specified angle.
+% \end{function}
+%
+% \begin{function}{\pgfadditionalshadetransform}
+%   \begin{syntax}
+%     \cs{pgfadditionalshadetransform}\marg{transformation}
+%   \end{syntax}
+%   This command is used to specify an additional transformation that should
+%   be applied to shadings when \cs{pgfshadepath} used.
+% \end{function}
+%
+% \subsubsection{Utility functions}
+%
+% The following functions are mainly useful for in declaring functional
+% shadings.
+%
+% \begin{function}{\pgfshadecolortorgb}
+%   \begin{syntax}
+%     \cs{pgfshadecolortorgb}\marg{color name}\marg{macro}
+%   \end{syntax}
+%   This command takes \meta{color name} as input and stores the colour's
+%   red/green/blue components as real numbers between 0.0 and 1.0 separated by
+%   spaces (which is exactly what you need if you want to push it on a stack)
+%   in \meta{macro}. This macro can then be used inside the \meta{type 4
+%   function} argument for \cs{pgfdeclarefunctionalshading}.
+%
+%   In addition, three macros suffixed with |red|, |green| and |blue| are
+%   defined, which store the individual components of \meta{color name}. These
+%   can also be used in the \meta{type 4 function} argument.
+% \end{function}
+%
+% \begin{function}{\pgfshadecolortocmyk}
+%   \begin{syntax}
+%     \cs{pgfshadecolortocmyk}\marg{color name}\marg{macro}
+%   \end{syntax}
+%   This command is analogous to \cs{pgfshadecolortorgb}, but stores the
+%   colour's cyan/magenta/yellow/black components. Four macros suffixed with
+%   |cyan|, |magenta|, |yellow|, and |black| are also defined.
+% \end{function}
+%
+% \begin{function}{\pgfshadecolortogray}
+%   \begin{syntax}
+%     \cs{pgfshadecolortogray}\marg{color name}\marg{macro}
+%   \end{syntax}
+%   This command is analogous to \cs{pgfshadecolortorgb}, but stores the
+%   colour's gray component. Although it's not needed, for consistency a
+%   second macro suffixed with |gray| is also defined.
+% \end{function}
+%
+% \begin{function}{\pgffuncshadingrgbtocmyk}
+%   \begin{syntax}
+%     \cs{pgffuncshadingrgbtocmyk}
+%   \end{syntax}
+%   Within the \meta{type 4 function} argument of
+%   \cs{pgfdeclarefunctionalshading}, this command can be used to convert the
+%   top 3 elements on the stack from RGB to CMYK. In combination with the
+%   \cs{ifpgfshadingmodelcmyk} conditional this macro can be used to make
+%   functional shading declarations more portable across colour models.
+% \end{function}
+%
+% \begin{function}{\pgffuncshadingrgbtogray}
+%   \begin{syntax}
+%     \cs{pgffuncshadingrgbtogray}
+%   \end{syntax}
+%   Within the \meta{type 4 function} argument of
+%   \cs{pgfdeclarefunctionalshading}, this command can be used to convert the
+%   top 3 elements on the stack from RGB to grayscale. In combination with the
+%   \cs{ifpgfshadingmodelgray} conditional this macro can be used to make
+%   functional shading declarations more portable across colour models.
+% \end{function}
+%
+% \begin{function}{\pgffuncshadingcmyktorgb}
+%   \begin{syntax}
+%     \cs{pgffuncshadingcmyktorgb}
+%   \end{syntax}
+%   Within the \meta{type 4 function} argument of
+%   \cs{pgfdeclarefunctionalshading}, this command can be used to convert the
+%   top 4 elements on the stack from CMYK to RGB. In combination with the
+%   \cs{ifpgfshadingmodelrgb} conditional this macro can be used to make
+%   functional shading declarations more portable across colour models.
+% \end{function}
+%
+% \begin{function}{\pgffuncshadingcmyktogray}
+%   \begin{syntax}
+%     \cs{pgffuncshadingcmyktogray}
+%   \end{syntax}
+%   Within the \meta{type 4 function} argument of
+%   \cs{pgfdeclarefunctionalshading}, this command can be used to convert the
+%   top 4 elements on the stack from CMYK to grayscale. In combination with
+%   the \cs{ifpgfshadingmodelgray} conditional this macro can be used to make
+%   functional shading declarations more portable across colour models.
+% \end{function}
+%
+% \begin{function}{\pgffuncshadinggraytorgb}
+%   \begin{syntax}
+%     \cs{pgffuncshadinggraytorgb}
+%   \end{syntax}
+%   Within the \meta{type 4 function} argument of
+%   \cs{pgfdeclarefunctionalshading}, this command can be used to convert the
+%   top element on the stack from grayscale to RGB. In combination with the
+%   \cs{ifpgfshadingmodelrgb} conditional this macro can be used to make
+%   functional shading declarations more portable across colour models.
+% \end{function}
+%
+% \begin{function}{\pgffuncshadinggraytocmyk}
+%   \begin{syntax}
+%     \cs{pgffuncshadinggraytocmyk}
+%   \end{syntax}
+%   Within the \meta{type 4 function} argument of
+%   \cs{pgfdeclarefunctionalshading}, this command can be used to convert the
+%   top element on the stack from grayscale to CMYK. In combination with the
+%   \cs{ifpgfshadingmodelcmyk} conditional this macro can be used to make
+%   functional shading declarations more portable across colour models.
+% \end{function}
+%
+% \begin{function}{\ifpgfshadingmodelrgb}
+%   \begin{syntax}
+%     \cs{ifpgfshadingmodelrgb}
+%   \end{syntax}
+%   Within the \meta{type 4 function} argument of
+%   \cs{pgfdeclarefunctionalshading}, this command can be used to test if the
+%   \pkg{xcolor} colour model is |rgb| \emph{at the time the shading is
+%   created}. This can be used to ensure that the data output in the
+%   \meta{type 4 function} correctly matches the active colour model.
+% \end{function}
+%
+% \begin{function}{\ifpgfshadingmodelcmyk}
+%   \begin{syntax}
+%     \cs{ifpgfshadingmodelcmyk}
+%   \end{syntax}
+%   Within the \meta{type 4 function} argument of
+%   \cs{pgfdeclarefunctionalshading}, this command can be used to test if the
+%   \pkg{xcolor} colour model is |cmyk| \emph{at the time the shading is
+%   created}. This can be used to ensure that the data output in the
+%   \meta{type 4 function} correctly matches the active colour model.
+% \end{function}
+%
+% \begin{function}{\ifpgfshadingmodelgray}
+%   \begin{syntax}
+%     \cs{ifpgfshadingmodelgray}
+%   \end{syntax}
+%   Within the \meta{type 4 function} argument of
+%   \cs{pgfdeclarefunctionalshading}, this command can be used to test if the
+%   \pkg{xcolor} colour model is |gray| \emph{at the time the shading is
+%   created}. This can be used to ensure that the data output in the
+%   \meta{type 4 function} correctly matches the active colour model.
+% \end{function}
+%
+% \end{documentation}
+%
+% \begin{implementation}
+%
+% \section{Implementation}
+%
+% \subsection{Main Package}
+%
+%    \begin{macrocode}
+%<*package>
+%    \end{macrocode}
+%
+%    \begin{macrocode}
+\ProvidesPackage{pgf-cmykshadings}%
+  [2018/10/15 CMYK shadings support for PGF (DCP)]
+%    \end{macrocode}
+%
+%    \begin{macrocode}
+\RequirePackage{pgf}
+%    \end{macrocode}
+%
+% \noindent Replace dependence on \cs{pgf@convertrgbstring} and
+% \cs{pgf@rgbconv} with generic macros \cs{pgf@convertstring} and
+% \cs{pgf@conv}.
+%
+%    \begin{macrocode}
+\def\pgf@parsefunc#1{%
+  \edef\temp{{#1}}%
+  \expandafter\pgf@convertstring\temp%
+  \edef\temp{{\pgf@conv}}%
+  \expandafter\pgf@@parsefunc\temp}
+%    \end{macrocode}
+%
+% \noindent Replace RGB parsing macros with new macros selected on the basis
+% of the current colour space (\cs{pgf@shading@mode}).
+%
+%    \begin{macrocode}
+\def\pgf@@parsefunc#1{%
+  \let\pgf@bounds=\pgfutil@empty%
+  \let\pgf@funcs=\pgfutil@empty%
+  \let\pgf@psfuncs=\pgfutil@empty%
+  \let\pgf@encode=\pgfutil@empty%
+  \let\pgf@sys@shading@ranges=\pgfutil@empty%
+  \pgf@sys@shading@range@num=0\relax%
+  \csname pgf@parsefirst\pgf@shading@model\endcsname[#1; ]%
+  \csname pgf@parselastdom\pgf@shading@model\endcsname[#1; ]%
+  \csname pgf@parsemid\pgf@shading@model\endcsname[#1; ]%
+  \ifx\pgf@bounds\pgfutil@empty%
+    \edef\pgf@pdfparseddomain{0 1}%
+    \edef\pgf@pdfparsedfunction{\pgf@singlefunc\space}%
+  \else%
+    \edef\pgf@pdfparseddomain{\pgf@doma\space\pgf@domb}%
+    \edef\pgf@pdfparsedfunction{%
+      << /FunctionType 3 /Domain [\pgf@doma\space\pgf@domb] /Functions
+      [\pgf@funcs\space] /Bounds [\pgf@bounds] /Encode [0 1 \pgf@encode]
+      >> }% <<
+  \fi%
+  \xdef\pgf@psfuncs{\pgf@psfuncs}%
+  }
+%    \end{macrocode}
+%
+% \noindent Define RGB parsing macros.
+%
+%    \begin{macrocode}
+\let\pgf@parsefirstrgb\pgf@parsefirst
+\let\pgf@parselastdomrgb\pgf@parselastdom
+\let\pgf@parsemidrgb\pgf@parsemid
+\let\pgf@parserestrgb\pgf@parserest
+%    \end{macrocode}
+%
+% \noindent Define new CMYK parsing macros.
+%
+%    \begin{macrocode}
+\def\pgf@parsefirstcmyk[cmyk(#1)=(#2,#3,#4,#5)#6]{%
+  \pgfmathsetlength\pgf@x{#1}%
+  \edef\pgf@sys@shading@start@pos{\the\pgf@x}%
+  \pgf@sys@bp@correct\pgf@x%
+  \edef\pgf@doma{\pgf@sys@tonumber{\pgf@x}}%
+  \edef\pgf@prevx{\pgf@sys@tonumber{\pgf@x}}%
+  \pgf@getcmyktuplewithmixin{#2}{#3}{#4}{#5}%
+  \edef\pgf@sys@shading@start@cmyk{\pgf@sys@cmyk}%
+  \let\pgf@sys@prevcolor=\pgf@sys@shading@start@cmyk%
+  \let\pgf@sys@prevpos=\pgf@sys@shading@start@pos%
+  \edef\pgf@prevcolor{\pgf@cmyk}%
+  \edef\pgf@firstcolor{\pgf@cmyk}}
+\def\pgf@parselastdomcmyk[cmyk(#1)=(#2,#3,#4,#5); {%
+  \pgfutil@ifnextchar]{%
+    \pgfmathsetlength\pgf@x{#1}%
+    \edef\pgf@sys@shading@end@pos{\the\pgf@x}%
+    \pgf@max=\pgf@x\relax%
+    \pgf@sys@bp@correct\pgf@x%
+    \edef\pgf@domb{\pgf@sys@tonumber{\pgf@x}}%
+    \pgf@getcmyktuplewithmixin{#2}{#3}{#4}{#5}%
+    \edef\pgf@sys@shading@end@cmyk{\pgf@sys@cmyk}%
+    \pgfutil@gobble}{\pgf@parselastdomcmyk[}}
+\def\pgf@parsemidcmyk[cmyk(#1)=(#2,#3,#4,#5); {\pgf@parserestcmyk[}
+\def\pgf@parserestcmyk[cmyk(#1)=(#2,#3,#4,#5); {%
+  \advance\pgf@sys@shading@range@num by1\relax%
+  \pgfutil@ifnextchar]{%
+    \pgf@getcmyktuplewithmixin{#2}{#3}{#4}{#5}%
+    \edef\pgf@singlefunc{\space%
+      << /FunctionType 2 /Domain [0 1] /C0
+      [\pgf@prevcolor] /C1 [\pgf@cmyk] /N 1 >> }% <<
+    \edef\pgf@funcs{\pgf@funcs\space%
+      << /FunctionType 2 /Domain [\pgf@doma\space\pgf@domb] /C0
+      [\pgf@prevcolor] /C1 [\pgf@cmyk] /N 1 >> }% <<
+    \edef\pgf@psfuncs{\pgf@prevx\space
+      \pgf@cmyk\space \pgf@prevcolor\space pgfshade \pgf@psfuncs}%
+    \pgfmathsetlength\pgf@x{#1}%
+    \edef\pgf@sys@shading@ranges{\pgf@sys@shading@ranges{%
+      {\pgf@sys@prevpos}{\the\pgf@x}{\pgf@sys@prevcolor}{\pgf@sys@cmyk}}}%
+    \edef\pgf@sys@prevpos{\the\pgf@x}%
+    \let\pgf@sys@prevcolor=\pgf@sys@cmyk%
+    \pgfutil@gobble}{%
+    \pgfmathsetlength\pgf@x{#1}%
+    \pgf@getcmyktuplewithmixin{#2}{#3}{#4}{#5}%
+    \edef\pgf@sys@shading@ranges{\pgf@sys@shading@ranges{%
+      {\pgf@sys@prevpos}{\the\pgf@x}{\pgf@sys@prevcolor}{\pgf@sys@cmyk}}}%
+    \edef\pgf@sys@prevpos{\the\pgf@x}%
+    \let\pgf@sys@prevcolor=\pgf@sys@cmyk%
+    \edef\pgf@psfuncs{\pgf@prevx\space \pgf@cmyk\space
+      \pgf@prevcolor\space pgfshade \pgf@psfuncs}%
+    \pgf@sys@bp@correct\pgf@x%
+    \edef\pgf@prevx{\pgf@sys@tonumber{\pgf@x}}%
+    \edef\pgf@bounds{\pgf@bounds\space\pgf@sys@tonumber{\pgf@x}}%
+    \edef\pgf@encode{\pgf@encode\space0 1}%
+    \edef\pgf@singlefunc{\space%
+      << /FunctionType 2 /Domain [0 1] /C0
+      [\pgf@prevcolor] /C1 [\pgf@cmyk] /N 1 >> }% <<
+    \edef\pgf@funcs{\pgf@funcs\space%
+      << /FunctionType 2 /Domain [\pgf@doma\space\pgf@domb] /C0
+      [\pgf@prevcolor] /C1 [\pgf@cmyk] /N 1 >> }% <<
+    \edef\pgf@prevcolor{\pgf@cmyk}%
+    \pgf@parserestcmyk[}}
+\def\pgf@getcmyktuplewithmixin#1#2#3#4{%
+  \pgfutil@definecolor{pgfshadetemp}{cmyk}{#1,#2,#3,#4}%
+  \pgfutil@ifundefined{applycolormixins}{}{\applycolormixins{pgfshadetemp}}%
+  \pgfutil@extractcolorspec{pgfshadetemp}{\pgf@tempcolor}%
+  \expandafter\pgfutil@convertcolorspec\pgf@tempcolor{cmyk}{\pgf@cmykcolor}%
+  \expandafter\pgf@getcmyk@@\pgf@cmykcolor!}
+\def\pgf@getcmyk@@#1,#2,#3,#4!{%
+  \def\pgf@cmyk{#1 #2 #3 #4}%
+  \def\pgf@sys@cmyk{{#1}{#2}{#3}{#4}}%
+}
+%    \end{macrocode}
+%
+% \noindent Define new grayscale parsing macros.
+%
+%    \begin{macrocode}
+\def\pgf@parsefirstgray[gray(#1)=(#2)#3]{%
+  \pgfmathsetlength\pgf@x{#1}%
+  \edef\pgf@sys@shading@start@pos{\the\pgf@x}%
+  \pgf@sys@bp@correct\pgf@x%
+  \edef\pgf@doma{\pgf@sys@tonumber{\pgf@x}}%
+  \edef\pgf@prevx{\pgf@sys@tonumber{\pgf@x}}%
+  \pgf@getgraytuplewithmixin{#2}%
+  \edef\pgf@sys@shading@start@gray{\pgf@sys@gray}%
+  \let\pgf@sys@prevcolor=\pgf@sys@shading@start@gray%
+  \let\pgf@sys@prevpos=\pgf@sys@shading@start@pos%
+  \edef\pgf@prevcolor{\pgf@gray}%
+  \edef\pgf@firstcolor{\pgf@gray}}
+\def\pgf@parselastdomgray[gray(#1)=(#2); {%
+  \pgfutil@ifnextchar]{%
+    \pgfmathsetlength\pgf@x{#1}%
+    \edef\pgf@sys@shading@end@pos{\the\pgf@x}%
+    \pgf@max=\pgf@x\relax%
+    \pgf@sys@bp@correct\pgf@x%
+    \edef\pgf@domb{\pgf@sys@tonumber{\pgf@x}}%
+    \pgf@getgraytuplewithmixin{#2}%
+    \edef\pgf@sys@shading@end@gray{\pgf@sys@gray}%
+    \pgfutil@gobble}{\pgf@parselastdomgray[}}
+\def\pgf@parsemidgray[gray(#1)=(#2); {\pgf@parserestgray[}
+\def\pgf@parserestgray[gray(#1)=(#2); {%
+  \advance\pgf@sys@shading@range@num by1\relax%
+  \pgfutil@ifnextchar]{%
+    \pgf@getgraytuplewithmixin{#2}%
+    \edef\pgf@singlefunc{\space%
+      << /FunctionType 2 /Domain [0 1] /C0
+      [\pgf@prevcolor] /C1 [\pgf@gray] /N 1 >> }% <<
+    \edef\pgf@funcs{\pgf@funcs\space%
+      << /FunctionType 2 /Domain [\pgf@doma\space\pgf@domb] /C0
+      [\pgf@prevcolor] /C1 [\pgf@gray] /N 1 >> }% <<
+    \edef\pgf@psfuncs{\pgf@prevx\space \pgf@gray\space
+      \pgf@prevcolor\space pgfshade \pgf@psfuncs}%
+    \pgfmathsetlength\pgf@x{#1}%
+    \edef\pgf@sys@shading@ranges{\pgf@sys@shading@ranges{%
+      {\pgf@sys@prevpos}{\the\pgf@x}{\pgf@sys@prevcolor}{\pgf@sys@gray}}}%
+    \edef\pgf@sys@prevpos{\the\pgf@x}%
+    \let\pgf@sys@prevcolor=\pgf@sys@gray%
+    \pgfutil@gobble}{%
+    \pgfmathsetlength\pgf@x{#1}%
+    \pgf@getgraytuplewithmixin{#2}%
+    \edef\pgf@sys@shading@ranges{\pgf@sys@shading@ranges{%
+      {\pgf@sys@prevpos}{\the\pgf@x}{\pgf@sys@prevcolor}{\pgf@sys@gray}}}%
+    \edef\pgf@sys@prevpos{\the\pgf@x}%
+    \let\pgf@sys@prevcolor=\pgf@sys@gray%
+    \edef\pgf@psfuncs{\pgf@prevx\space \pgf@gray\space
+      \pgf@prevcolor\space pgfshade \pgf@psfuncs}%
+    \pgf@sys@bp@correct\pgf@x%
+    \edef\pgf@prevx{\pgf@sys@tonumber{\pgf@x}}%
+    \edef\pgf@bounds{\pgf@bounds\space\pgf@sys@tonumber{\pgf@x}}%
+    \edef\pgf@encode{\pgf@encode\space0 1}%
+    \edef\pgf@singlefunc{\space%
+      << /FunctionType 2 /Domain [0 1] /C0
+      [\pgf@prevcolor] /C1 [\pgf@gray] /N 1 >> }% <<
+    \edef\pgf@funcs{\pgf@funcs\space%
+      << /FunctionType 2 /Domain [\pgf@doma\space\pgf@domb] /C0
+      [\pgf@prevcolor] /C1 [\pgf@gray] /N 1 >> }% <<
+    \edef\pgf@prevcolor{\pgf@gray}%
+    \pgf@parserestgray[}}
+\def\pgf@getgraytuplewithmixin#1{%
+  \pgfutil@definecolor{pgfshadetemp}{gray}{#1}%
+  \pgfutil@ifundefined{applycolormixins}{}{\applycolormixins{pgfshadetemp}}%
+  \pgfutil@extractcolorspec{pgfshadetemp}{\pgf@tempcolor}%
+  \expandafter\pgfutil@convertcolorspec\pgf@tempcolor{gray}{\pgf@graycolor}%
+  \expandafter\pgf@getgray@@\pgf@graycolor!}
+\def\pgf@getgray@@#1!{%
+  \def\pgf@gray{#1}%
+  \def\pgf@sys@gray{{#1}}%
+}
+%    \end{macrocode}
+%
+% \noindent Define new colour space agnostic colour specification parsing
+% macros. This includes parsing CMYK colour specifications (i.e.,
+% |color(|\meta{postition}|)=(|\meta{C}|,|\meta{M}|,|\meta{Y}|,|\meta{K}|)|.
+%
+%    \begin{macrocode}
+\def\pgf@convertstring#1{%
+  \def\pgf@conv{}%
+  \pgf@convert#1]%
+  }
+\def\pgf@convert{%
+  \pgfutil@ifnextchar]{\pgfutil@gobble}%done!
+  {%
+    \pgfutil@ifnextchar;{\pgf@grabsemicolor}%
+    {%
+      \pgfutil@ifnextchar c{\pgf@gobblec}%
+      {%
+        \pgfutil@ifnextchar g{\pgf@grabgray}%
+        {%
+          \pgfutil@ifnextchar o{\pgf@grabcolor}%
+          {%
+            \pgfutil@ifnextchar m{\pgf@grabcmyk}%
+            {%
+              \pgfutil@ifnextchar r{\pgf@grabrgb}%
+                {\pgferror{Illformed shading
+                 specification}\pgf@convert}%
+            }%
+          }%
+        }%
+      }%
+    }%
+  }%
+}
+\def\pgf@grabsemicolor;{%
+  \edef\pgf@conv{\pgf@conv; }\pgf@convert}
+\def\pgf@gobblec c{\pgf@convert}
+\def\pgf@savecolor#1{
+  \pgfutil@extractcolorspec{pgf@tempcol}{\pgf@tempcolor}%
+  \expandafter\pgfutil@convertcolorspec\pgf@tempcolor%
+    {\pgf@shading@model}{\pgf@color}%
+  \expandafter\pgf@convget@\expandafter{\pgf@color}{#1}%
+}
+\def\pgf@grabrgb rgb(#1)=(#2,#3,#4){%
+  \pgfutil@definecolor{pgf@tempcol}{rgb}{#2,#3,#4}%
+  \pgf@savecolor{#1}%
+}
+\def\pgf@grabcmyk myk(#1)=(#2,#3,#4,#5){%
+  \pgfutil@definecolor{pgf@tempcol}{cmyk}{#2,#3,#4,#5}%
+  \pgf@savecolor{#1}%
+}
+\def\pgf@grabgray gray(#1)=(#2){%
+  \pgfutil@definecolor{pgf@tempcol}{gray}{#2}%
+  \pgf@savecolor{#1}%
+}
+\def\pgf@grabcolor olor(#1)=(#2){%
+  \pgfutil@colorlet{pgf@tempcol}{#2}%
+  \pgf@savecolor{#1}%
+}
+\def\pgf@convget@#1#2{%
+  \edef\pgf@conv{\pgf@conv \pgf@shading@model(#2)=(#1)}\pgf@convert}
+%    \end{macrocode}
+%
+% \noindent New macros to convert CMYK colours to a format suitable for use in
+% the \meta{type 4 function} argument of \cs{pgfdeclarefunctionalshading}.
+%
+%    \begin{macrocode}
+\newdimen\pgf@xd
+\def\pgfshadecolortocmyk#1#2{%
+  \pgfutil@colorlet{pgf@tempcol}{#1}%
+  \pgfutil@extractcolorspec{pgf@tempcol}{\pgf@tempcolor}%
+  \expandafter\pgfutil@convertcolorspec\pgf@tempcolor{cmyk}{\pgf@cmykcolor}%
+  \expandafter\pgfshading@cmyk\pgf@cmykcolor\relax%
+  \edef#2{\pgf@sys@tonumber{\pgf@xa}\space\pgf@sys@tonumber{\pgf@xb}\space
+    \pgf@sys@tonumber{\pgf@xc}\space\pgf@sys@tonumber{\pgf@xd}\space}%
+  \c@pgf@counta\escapechar%
+  \escapechar-1\relax%
+  \expandafter\edef\csname\string#2cyan\endcsname{%
+    \pgf@sys@tonumber{\pgf@xa}\space}%
+  \expandafter\edef\csname\string#2magenta\endcsname{%
+    \pgf@sys@tonumber{\pgf@xb}\space}%
+  \expandafter\edef\csname\string#2yellow\endcsname{%
+    \pgf@sys@tonumber{\pgf@xc}\space}%
+  \expandafter\edef\csname\string#2black\endcsname{%
+    \pgf@sys@tonumber{\pgf@xd}\space}%
+  \escapechar\c@pgf@counta%
+}
+\def\pgfshading@cmyk#1,#2,#3,#4\relax{%
+  \pgf@xa=#1pt%
+  \pgf@xb=#2pt%
+  \pgf@xc=#3pt%
+  \pgf@xd=#4pt%
+}
+%    \end{macrocode}
+%
+% \noindent New macros to convert grayscale colours to a format suitable for
+% use in the \meta{type 4 function} argument of
+% \cs{pgfdeclarefunctionalshading}.
+%
+%    \begin{macrocode}
+\def\pgfshadecolortogray#1#2{%
+  \pgfutil@colorlet{pgf@tempcol}{#1}%
+  \pgfutil@extractcolorspec{pgf@tempcol}{\pgf@tempcolor}%
+  \expandafter\pgfutil@convertcolorspec\pgf@tempcolor{gray}{\pgf@graycolor}%
+  \expandafter\pgfshading@gray\pgf@graycolor\relax%
+  \edef#2{\pgf@sys@tonumber{\pgf@xa}\space}%
+  \c@pgf@counta\escapechar%
+  \escapechar-1\relax%
+  \expandafter\edef\csname\string#2gray\endcsname{%
+    \pgf@sys@tonumber{\pgf@xa}\space}%
+  \escapechar\c@pgf@counta%
+}
+\def\pgfshading@gray#1\relax{%
+  \pgf@xa=#1pt%
+}
+%    \end{macrocode}
+%
+% \noindent Ensure colour model is set up based on the current \pkg{xcolor}
+% colour model when declaring shadings.
+%
+%    \begin{macrocode}
+\def\pgfdeclarehorizontalshading{%
+  \pgf@setup@model
+  \pgfutil@ifnextchar[%
+    \pgf@declarehorizontalshading{\pgf@declarehorizontalshading[]}}
+\def\pgfdeclareverticalshading{%
+  \pgf@setup@model
+  \pgfutil@ifnextchar[%
+    \pgf@declareverticalshading{\pgf@declareverticalshading[]}}
+\def\pgfdeclareradialshading{%
+  \pgf@setup@model
+  \pgfutil@ifnextchar[%
+    \pgf@declareradialshading{\pgf@declareradialshading[]}}
+\def\pgfdeclarefunctionalshading{%
+  \pgf@setup@model
+  \pgfutil@ifnextchar[
+    \pgf@declarefunctionalshading{\pgf@declarefunctionalshading[]}}
+%    \end{macrocode}
+%
+% \noindent Ensure colour model is set up based on the current \pkg{xcolor}
+% colour model when using shadings.
+%
+%    \begin{macrocode}
+\def\pgfuseshading#1{%
+  \edef\pgf@shadingname{@pgfshading#1}%
+  \edef\pgf@shadingsavedmodel{@pgfshading#1@model}%
+  \pgf@tryextensions{\pgf@shadingname}{\pgfalternateextension}%
+  \expandafter\pgfutil@ifundefined\expandafter{\pgf@shadingname}%
+  {\pgferror{Undefined shading "#1"}}%
+  {%
+    {%
+      \pgf@setup@model
+      \pgfutil@globalcolorsfalse%
+      \def\pgf@shade@adds{}%
+      \pgfutil@ifundefined{pgf@deps\pgf@shadingname}%
+      {}%
+      {%
+        \edef\@list{\csname pgf@deps\pgf@shadingname\endcsname}%
+        \pgfutil@for\@temp:=\@list\do{%
+          {%
+            \pgfutil@ifundefined{applycolormixins}%
+              {}{\applycolormixins{\@temp}}%
+            \pgfutil@extractcolorspec{\@temp}{\pgf@tempcolor}%
+            \expandafter\pgfutil@ifundefined\expandafter{%
+              \pgf@shadingsavedmodel}
+              {\expandafter\pgfutil@convertcolorspec\pgf@tempcolor{%
+                 \pgf@shading@model}{\pgf@color}}%
+              {\expandafter\pgfutil@convertcolorspec\pgf@tempcolor{%
+                 \pgf@shadingsavedmodel}{\pgf@color}}%
+            \xdef\pgf@shade@adds{\pgf@shade@adds,\pgf@color}%
+          }%
+        }%
+      }%
+      \expandafter\pgf@strip@shadename\pgf@shadingname!!%
+      \pgfutil@ifundefined{@pgfshading\pgf@basename\pgf@shade@adds!}%
+      {%
+        {%
+          \expandafter\def\expandafter\@temp\expandafter{%
+            \csname pgf@func\pgf@shadingname\endcsname}%
+          \edef\@args{{\pgf@basename\pgf@shade@adds}}%
+          \expandafter\expandafter\expandafter\def%
+          \expandafter\expandafter\expandafter\@@args%
+          \expandafter\expandafter\expandafter{%
+            \csname pgf@args\pgf@shadingname\endcsname}%
+          \expandafter\expandafter\expandafter\@temp\expandafter\@args\@@args%
+          %
+        }%
+      }%
+      {}%
+      \pgf@invokeshading{%
+        \csname @pgfshading\pgf@basename\pgf@shade@adds!\endcsname}%
+    }%
+  }%
+}
+%    \end{macrocode}
+%
+% \noindent Conditionals for use in the \meta{type 4 function} argument of
+% \cs{pgfdeclarefunctionalshading} to test for the currently active
+% \pkg{xcolor} colour model.
+%
+%    \begin{macrocode}
+\newif\ifpgfshadingmodelrgb
+\newif\ifpgfshadingmodelcmyk
+\newif\ifpgfshadingmodelgray
+%    \end{macrocode}
+%
+% \noindent Shading colour space property set up based on the currently active
+% \pkg{xcolor} colour model.
+%
+%    \begin{macrocode}
+\def\pgf@setup@model{%
+  \pgfshadingmodelrgbtrue
+  \pgfshadingmodelcmykfalse
+  \pgfshadingmodelgrayfalse
+  \XC@sdef\pgf@mod@test{\XC@tgt@mod{natural}}%
+  \def\pgf@shading@functional@range{0 1 0 1 0 1}%
+  \def\pgf@shading@device{/DeviceRGB}%
+  \def\pgf@shading@model{rgb}%
+  \ifx\pgf@mod@test\XC@mod@natural
+    \ifpgfcmykshadingdefault
+      \def\pgf@shading@functional@range{0 1 0 1 0 1 0 1}%
+      \def\pgf@shading@device{/DeviceCMYK}%
+      \def\pgf@shading@model{cmyk}%
+      \pgfshadingmodelrgbfalse
+      \pgfshadingmodelcmyktrue
+    \else
+      \def\pgf@shading@functional@range{0 1 0 1 0 1}%
+      \def\pgf@shading@device{/DeviceRGB}%
+      \def\pgf@shading@model{rgb}%
+    \fi
+  \fi
+  \ifx\pgf@mod@test\XC@mod@cmyk
+    \def\pgf@shading@functional@range{0 1 0 1 0 1 0 1}%
+    \def\pgf@shading@device{/DeviceCMYK}%
+    \def\pgf@shading@model{cmyk}%
+      \pgfshadingmodelrgbfalse
+      \pgfshadingmodelcmyktrue
+  \fi
+  \ifx\pgf@mod@test\XC@mod@gray
+    \def\pgf@shading@functional@range{0 1}%
+    \def\pgf@shading@device{/DeviceGray}%
+    \def\pgf@shading@model{gray}%
+      \pgfshadingmodelrgbfalse
+      \pgfshadingmodelgraytrue
+  \fi
+}
+%    \end{macrocode}
+%
+% \noindent Converters for use in the \meta{type 4 function} argument of
+% \cs{pgfdeclarefunctionalshading}. These macros use the same algorithms as
+% \pkg{xcolor}.
+%
+%    \begin{macrocode}
+\def\pgffuncshadingrgbtocmyk{%
+  1.0 exch sub 3 1 roll
+  1.0 exch sub 3 1 roll
+  1.0 exch sub 3 1 roll
+  3 copy
+  2 copy gt { exch } if pop
+  2 copy gt { exch } if pop
+  dup 3 1 roll sub
+  0.0 2 copy lt { exch } if pop
+  1.0 2 copy gt { exch } if pop
+  4 1 roll
+  dup 3 1 roll sub
+  0.0 2 copy lt { exch } if pop
+  1.0 2 copy gt { exch } if pop
+  4 1 roll
+  dup 3 1 roll sub
+  0.0 2 copy lt { exch } if pop
+  1.0 2 copy gt { exch } if pop
+  4 1 roll
+}
+\def\pgffuncshadingrgbtogray{%
+  0.11 mul exch 0.59 mul add exch 0.3 mul add
+}
+\def\pgffuncshadingcmyktorgb{%
+  % covert to CMY
+  dup 3 1 roll add
+  1.0 2 copy gt { exch } if pop
+  4 1 roll
+  dup 3 1 roll add
+  1.0 2 copy gt { exch } if pop
+  4 1 roll
+  add
+  1.0 2 copy gt { exch } if pop
+  3 1 roll
+  % covert to RGB
+  1.0 exch sub
+  3 1 roll
+  1.0 exch sub
+  3 1 roll
+  1.0 exch sub
+  3 1 roll
+}
+\def\pgffuncshadingcmyktogray{%
+  exch 0.11 mul add exch 0.59 mul add exch 0.3 mul add
+  1.0 2 copy gt { exch } if pop
+  1.0 exch sub
+}
+\def\pgffuncshadinggraytorgb{%
+  dup dup
+}
+\def\pgffuncshadinggraytocmyk{%
+  0.0 0.0 0.0
+  4 3 roll
+}
+%    \end{macrocode}
+%
+% \noindent Load the correct driver file.
+%
+%    \begin{macrocode}
+\def\pgfutilgetcmykshadingsdriver{%
+  \expandafter\pgfutil@getcmykshadingsdriver\pgfsysdriver[
+}
+\def\pgfutil@getcmykshadingsdriver pgfsys-#1[{%
+  \edef\pgfsyscmykshadingsdriver{pgfsys-cmykshadings-#1}%
+}
+\pgfutilgetcmykshadingsdriver
+\input\pgfsyscmykshadingsdriver
+%    \end{macrocode}
+%
+% \noindent Style options to use CMYK shadings by default or not when the
+% selected \pkg{xcolor} colour model is |natural|.
+%
+%    \begin{macrocode}
+\newif\ifpgfcmykshadingdefault
+\DeclareOption{cmyk}{%
+  \pgfcmykshadingdefaulttrue
+}
+\DeclareOption{rgb}{%
+  \pgfcmykshadin@defaultfalse
+}
+\ExecuteOptions{cmyk}
+\ProcessOptions\relax
+%    \end{macrocode}
+%
+%    \begin{macrocode}
+%</package>
+%    \end{macrocode}
+%
+% \subsection{Drivers}
+%
+% \subsubsection{pdftex driver}
+%
+%    \begin{macrocode}
+%<*pdftex-driver>
+%    \end{macrocode}
+%
+%    \begin{macrocode}
+\ProvidesFile{pgfsys-cmykshadings-pdftex.def}%
+  [2018/10/15 CMYK shadings support for PGF pdftex driver (DCP)]
+%    \end{macrocode}
+%
+%    \begin{macrocode}
+\def\pgfsys@horishading#1#2#3{%
+  {%
+    \pgf@parsefunc{#3}%
+    \pgfmathparse{#2}%
+    \setbox\pgfutil@tempboxa=\hbox to\pgf@max{%
+      \vbox to\pgfmathresult pt{\vfil\pgfsys@invoke{/Sh sh}}\hfil}%
+    \pgf@process{\pgfpoint{\pgf@max}{#2}}%
+    \immediate\pdfxform resources {%
+      /Shading << /Sh << /ShadingType 2
+      /ColorSpace \pgf@shading@device\space
+      /Domain [\pgf@pdfparseddomain]
+      /Coords [\pgf@doma\space0 \pgf@domb\space0]
+      /Function \pgf@pdfparsedfunction
+      /Extend [false false] >> >>}\pgfutil@tempboxa% <<
+    \expandafter\xdef\csname @pgfshading#1!\endcsname{%
+      \leavevmode\noexpand\pdfrefxform\the\pdflastxform}%
+    \expandafter\xdef\csname @pgfshading#1@model!\endcsname{%
+      \pgf@shading@model}%
+  }%
+}
+\def\pgfsys@vertshading#1#2#3{%
+  {%
+    \pgf@parsefunc{#3}%
+    \pgfmathparse{#2}%
+    \setbox\pgfutil@tempboxa=\hbox to\pgfmathresult pt{%
+      \vbox to\pgf@max{\vfil\pgfsys@invoke{/Sh sh}}\hfil}%
+    \pgf@process{\pgfpoint{#2}{\pgf@max}}%
+    \immediate\pdfxform resources {%
+      /Shading << /Sh << /ShadingType 2
+      /ColorSpace \pgf@shading@device\space
+      /Domain [\pgf@pdfparseddomain]
+      /Coords [0 \pgf@doma\space0 \pgf@domb]
+      /Function \pgf@pdfparsedfunction
+      /Extend [false false] >> >>}\pgfutil@tempboxa% <<
+    \expandafter\xdef\csname @pgfshading#1!\endcsname{%
+      \leavevmode\noexpand\pdfrefxform\the\pdflastxform}%
+    \expandafter\xdef\csname @pgfshading#1@model!\endcsname{%
+      \pgf@shading@model}%
+  }%
+}
+\def\pgfsys@radialshading#1#2#3{%
+  {%
+    \pgf@parsefunc{#3}%
+    \setbox\pgfutil@tempboxa=\hbox to2\pgf@max{%
+      \vbox to2\pgf@max{\vfil\pgfsys@invoke{/Sh sh}}\hfil}%
+    \pgf@process{#2}%
+    \pgf@xa=\pgf@x%
+    \pgf@ya=\pgf@y%
+    \pgf@process{\pgfpoint{\pgf@max}{\pgf@max}}%
+    \advance\pgf@xa by \pgf@x%
+    \advance\pgf@ya by \pgf@y%
+    \pgf@sys@bp@correct{\pgf@x}%
+    \pgf@sys@bp@correct{\pgf@y}%
+    \pgf@sys@bp@correct{\pgf@xa}%
+    \pgf@sys@bp@correct{\pgf@ya}%
+    \immediate\pdfxform resources {%
+      /Shading << /Sh << /ShadingType 3
+      /ColorSpace \pgf@shading@device\space
+      /Domain [\pgf@pdfparseddomain]
+      /Coords [\pgf@sys@tonumber{\pgf@xa}
+        \pgf@sys@tonumber{\pgf@ya}
+        \pgf@doma\space
+        \pgf@sys@tonumber{\pgf@x}
+        \pgf@sys@tonumber{\pgf@y}
+        \pgf@domb]
+      /Function \pgf@pdfparsedfunction
+      /Extend [true false] >> >>}\pgfutil@tempboxa% <<
+    \expandafter\xdef\csname @pgfshading#1!\endcsname{%
+      \leavevmode\noexpand\pdfrefxform\the\pdflastxform}%
+    \expandafter\xdef\csname @pgfshading#1@model!\endcsname{%
+      \pgf@shading@model}%
+  }%
+}
+\def\pgfsys@functionalshading#1#2#3#4{%
+  {%
+    \pgf@process{#2}%
+    \pgf@xa=\pgf@x%
+    \pgf@ya=\pgf@y%
+    \pgf@process{#3}%
+    \pgf@xb=\pgf@x%
+    \pgf@yb=\pgf@y%
+    \advance\pgf@x by-\pgf@xa%
+    \advance\pgf@y by-\pgf@ya%
+    \setbox\pgfutil@tempboxa=\hbox to\pgf@x{%
+      \vbox to\pgf@y{\vfil\pgfsys@invoke{/Sh sh}}\hfil}%
+    \pgf@sys@bp@correct{\pgf@xa}%
+    \pgf@sys@bp@correct{\pgf@ya}%
+    \pgf@sys@bp@correct{\pgf@xb}%
+    \pgf@sys@bp@correct{\pgf@yb}%
+    \pgf@xc=-\pgf@xa%
+    \pgf@yc=-\pgf@ya%
+    % Now build the function
+    \pdfobj
+    stream
+    attr
+    {
+      /FunctionType 4
+      /Domain [\pgf@sys@tonumber{\pgf@xa}\space
+        \pgf@sys@tonumber{\pgf@xb}\space
+        \pgf@sys@tonumber{\pgf@ya}\space
+        \pgf@sys@tonumber{\pgf@yb}]
+      /Range [\pgf@shading@functional@range]
+    }
+    {{#4}}%
+    \edef\pgf@temp@num{\the\pdflastobj}%
+    \pdfxform resources {%
+      /Shading << /Sh << /ShadingType 1
+      /ColorSpace \pgf@shading@device\space
+      /Matrix [1 0 0 1 \pgf@sys@tonumber{\pgf@xc}\space
+        \pgf@sys@tonumber{\pgf@yc}]
+      /Domain [\pgf@sys@tonumber{\pgf@xa}\space
+        \pgf@sys@tonumber{\pgf@xb}\space
+        \pgf@sys@tonumber{\pgf@ya}\space
+        \pgf@sys@tonumber{\pgf@yb}]
+      /Function \pgf@temp@num\space 0 R
+      >> >>}\pgfutil@tempboxa% <<
+    \expandafter\xdef\csname @pgfshading#1!\endcsname{%
+      \leavevmode%
+      \noexpand\pdfrefxform\the\pdflastxform%
+      \noexpand\pdfrefobj\pgf@temp@num%
+    }%
+    \expandafter\xdef\csname @pgfshading#1@model!\endcsname{%
+      \pgf@shading@model}%
+  }%
+}
+%    \end{macrocode}
+%
+%    \begin{macrocode}
+%</pdftex-driver>
+%    \end{macrocode}
+%
+% \subsubsection{xetex driver}
+%
+%    \begin{macrocode}
+%<*xetex-driver>
+%    \end{macrocode}
+%
+%    \begin{macrocode}
+\ProvidesFile{pgfsys-cmykshadings-xetex.def}%
+  [2018/10/15 CMYK shadings support for PGF xetex driver (DCP)]
+%    \end{macrocode}
+%
+%    \begin{macrocode}
+\input pgfsys-cmykshadings-dvipdfmx.def
+%    \end{macrocode}
+%
+%    \begin{macrocode}
+%</xetex-driver>
+%    \end{macrocode}
+%
+% \subsubsection{luatex driver}
+%
+%    \begin{macrocode}
+%<*luatex-driver>
+%    \end{macrocode}
+%
+%    \begin{macrocode}
+\ProvidesFile{pgfsys-cmykshadings-luatex.def}%
+  [2018/10/15 CMYK shadings support for PGF luatex driver (DCP)]
+%    \end{macrocode}
+%
+%    \begin{macrocode}
+\def\pgfsys@horishading#1#2#3{%
+  {%
+    \pgf@parsefunc{#3}%
+    \pgfmathparse{#2}%
+    \setbox\pgfutil@tempboxa=\hbox to\pgf@max{%
+      \vbox to\pgfmathresult pt{\vfil\pgfsys@invoke{/Sh sh}}\hfil}%
+    \pgf@process{\pgfpoint{\pgf@max}{#2}}%
+    \immediate\saveboxresource resources {%
+      /Shading << /Sh << /ShadingType 2
+      /ColorSpace \pgf@shading@device\space
+      /Domain [\pgf@pdfparseddomain]
+      /Coords [\pgf@doma\space0 \pgf@domb\space0]
+      /Function \pgf@pdfparsedfunction
+      /Extend [false false] >> >>}\pgfutil@tempboxa% <<
+    \expandafter\xdef\csname @pgfshading#1!\endcsname{%
+      \leavevmode\noexpand\useboxresource\the\lastsavedboxresourceindex}% 
+    \expandafter\xdef\csname @pgfshading#1@model!\endcsname{%
+      \pgf@shading@model}%
+  }%
+}
+\def\pgfsys@vertshading#1#2#3{%
+  {%
+    \pgf@parsefunc{#3}%
+    \pgfmathparse{#2}%
+    \setbox\pgfutil@tempboxa=\hbox to\pgfmathresult pt{%
+      \vbox to\pgf@max{\vfil\pgfsys@invoke{/Sh sh}}\hfil}%
+    \pgf@process{\pgfpoint{#2}{\pgf@max}}%
+    \immediate\saveboxresource resources {%
+      /Shading << /Sh << /ShadingType 2
+      /ColorSpace \pgf@shading@device\space
+      /Domain [\pgf@pdfparseddomain]
+      /Coords [0 \pgf@doma\space0 \pgf@domb]
+      /Function \pgf@pdfparsedfunction
+      /Extend [false false] >> >>}\pgfutil@tempboxa% <<
+    \expandafter\xdef\csname @pgfshading#1!\endcsname{%
+      \leavevmode\noexpand\useboxresource\the\lastsavedboxresourceindex}%
+    \expandafter\xdef\csname @pgfshading#1@model!\endcsname{%
+      \pgf@shading@model}%
+  }%
+}
+\def\pgfsys@radialshading#1#2#3{%
+  {%
+    \pgf@parsefunc{#3}%
+    \setbox\pgfutil@tempboxa=\hbox to2\pgf@max{%
+      \vbox to2\pgf@max{\vfil\pgfsys@invoke{/Sh sh}}\hfil}%
+    \pgf@process{#2}%
+    \pgf@xa=\pgf@x%
+    \pgf@ya=\pgf@y%
+    \pgf@process{\pgfpoint{\pgf@max}{\pgf@max}}%
+    \advance\pgf@xa by \pgf@x%
+    \advance\pgf@ya by \pgf@y%
+    \pgf@sys@bp@correct{\pgf@x}%
+    \pgf@sys@bp@correct{\pgf@y}%
+    \pgf@sys@bp@correct{\pgf@xa}%
+    \pgf@sys@bp@correct{\pgf@ya}%
+    \immediate\saveboxresource resources {%
+      /Shading << /Sh << /ShadingType 3
+      /ColorSpace \pgf@shading@device\space
+      /Domain [\pgf@pdfparseddomain]
+      /Coords [\pgf@sys@tonumber{\pgf@xa}
+        \pgf@sys@tonumber{\pgf@ya}
+        \pgf@doma\space
+        \pgf@sys@tonumber{\pgf@x}
+        \pgf@sys@tonumber{\pgf@y}
+        \pgf@domb]
+      /Function \pgf@pdfparsedfunction
+      /Extend [true false] >> >>}\pgfutil@tempboxa% <<
+    \expandafter\xdef\csname @pgfshading#1!\endcsname{%
+      \leavevmode\noexpand\useboxresource\the\lastsavedboxresourceindex}%
+    \expandafter\xdef\csname @pgfshading#1@model!\endcsname{%
+      \pgf@shading@model}%
+  }%
+}
+\def\pgfsys@functionalshading#1#2#3#4{%
+  {%
+    \pgf@process{#2}%
+    \pgf@xa=\pgf@x%
+    \pgf@ya=\pgf@y%
+    \pgf@process{#3}%
+    \pgf@xb=\pgf@x%
+    \pgf@yb=\pgf@y%
+    \advance\pgf@x by-\pgf@xa%
+    \advance\pgf@y by-\pgf@ya%
+    \setbox\pgfutil@tempboxa=\hbox to\pgf@x{%
+      \vbox to\pgf@y{\vfil\pgfsys@invoke{/Sh sh}}\hfil}%
+    \pgf@sys@bp@correct{\pgf@xa}%
+    \pgf@sys@bp@correct{\pgf@ya}%
+    \pgf@sys@bp@correct{\pgf@xb}%
+    \pgf@sys@bp@correct{\pgf@yb}%
+    \pgf@xc=-\pgf@xa%
+    \pgf@yc=-\pgf@ya%
+    % Now build the function
+    \pdfextension obj
+    stream
+    attr
+    {
+      /FunctionType 4
+      /Domain [\pgf@sys@tonumber{\pgf@xa}\space
+        \pgf@sys@tonumber{\pgf@xb}\space
+        \pgf@sys@tonumber{\pgf@ya}\space
+        \pgf@sys@tonumber{\pgf@yb}]
+      /Range [\pgf@shading@functional@range]
+    }
+    {{#4}}%
+    \edef\pgf@temp@num{\the\numexpr\pdffeedback lastobj\relax}%
+    \saveboxresource resources {%
+      /Shading << /Sh << /ShadingType 1
+      /ColorSpace \pgf@shading@device\space
+      /Matrix [1 0 0 1 \pgf@sys@tonumber{\pgf@xc}\space
+        \pgf@sys@tonumber{\pgf@yc}]
+      /Domain [\pgf@sys@tonumber{\pgf@xa}\space
+        \pgf@sys@tonumber{\pgf@xb}\space
+        \pgf@sys@tonumber{\pgf@ya}\space
+        \pgf@sys@tonumber{\pgf@yb}]
+      /Function \pgf@temp@num\space 0 R
+      >> >>}\pgfutil@tempboxa% <<
+    \expandafter\xdef\csname @pgfshading#1!\endcsname{%
+      \leavevmode%
+      \noexpand\useboxresource\the\lastsavedboxresourceindex%
+      \noexpand\pdfextension refobj \pgf@temp@num%
+    }%
+    \expandafter\xdef\csname @pgfshading#1@model!\endcsname{%
+      \pgf@shading@model}%
+  }%
+}
+%    \end{macrocode}
+%
+%    \begin{macrocode}
+%</luatex-driver>
+%    \end{macrocode}
+%
+% \subsubsection{dvipdfmx driver}
+%
+%    \begin{macrocode}
+%<*dvipdfmx-driver>
+%    \end{macrocode}
+%
+%    \begin{macrocode}
+\ProvidesFile{pgfsys-cmykshadings-dvipdfmx.def}%
+  [2018/10/15 CMYK shadings support for PGF dvipdfmx driver (DCP)]
+%    \end{macrocode}
+%
+%    \begin{macrocode}
+\def\pgfsys@horishading#1#2#3{%
+  {%
+    \pgf@parsefunc{#3}%
+    \pgfmathparse{#2}%
+    \pgf@process{\pgfpoint{\pgf@max}{#2}}%
+    \edef\@tempa{\noexpand\pgfutil@insertatbegincurrentpagefrombox{%
+      \special{pdf:bxobj @pgfshade\the\pgfsys@objnum\space
+        width \the\pgf@max\space height \pgfmathresult pt}%
+      \special{pdf:put @resources
+      <<
+        /Shading << /Sh << /ShadingType 2
+        /ColorSpace \pgf@shading@device\space
+        /Domain [\pgf@pdfparseddomain]
+        /Coords [\pgf@doma\space0 \pgf@domb\space0]
+        /Function \pgf@pdfparsedfunction
+        /Extend [false false] >> >>
+      >>}%
+      \pgfsys@invoke{/Sh sh}%
+      \special{pdf:exobj}}}\@tempa% <<
+    \expandafter\xdef\csname @pgfshading#1!\endcsname{%
+      \hbox to\the\pgf@max{\vbox to\pgfmathresult pt{%
+        \vfil\special{pdf:uxobj @pgfshade\the\pgfsys@objnum}}\hfil}}%
+    \expandafter\xdef\csname @pgfshading#1@model!\endcsname{%
+      \pgf@shading@model}%
+  }%
+  \global\advance\pgfsys@objnum\@ne%
+}
+\def\pgfsys@vertshading#1#2#3{%
+  {%
+    \pgf@parsefunc{#3}%
+    \pgfmathparse{#2}%
+    \pgf@process{\pgfpoint{\pgf@max}{#2}}%
+    \edef\@tempa{\noexpand\pgfutil@insertatbegincurrentpagefrombox{%
+      \special{pdf:bxobj @pgfshade\the\pgfsys@objnum\space
+        width \pgfmathresult pt\space height \the\pgf@max}%
+      \special{pdf:put @resources
+      <<
+        /Shading << /Sh << /ShadingType 2
+        /ColorSpace \pgf@shading@device\space
+        /Domain [\pgf@pdfparseddomain]
+        /Coords [0 \pgf@doma\space0 \pgf@domb]
+        /Function \pgf@pdfparsedfunction
+        /Extend [false false] >> >>
+      >>}%
+      \pgfsys@invoke{/Sh sh}%
+      \special{pdf:exobj}}}\@tempa% <<
+    \expandafter\xdef\csname @pgfshading#1!\endcsname{%
+      \hbox to\pgfmathresult pt{\vbox to\the\pgf@max{%
+        \vfil\special{pdf:uxobj @pgfshade\the\pgfsys@objnum}}\hfil}}% 
+    \expandafter\xdef\csname @pgfshading#1@model!\endcsname{%
+      \pgf@shading@model}%
+  }%
+  \global\advance\pgfsys@objnum\@ne%
+}
+\def\pgfsys@radialshading#1#2#3{%
+  {%
+    \pgf@parsefunc{#3}%
+    \pgf@process{#2}%
+    \pgf@xa=\pgf@x%
+    \pgf@ya=\pgf@y%
+    \pgf@process{\pgfpoint{\pgf@max}{\pgf@max}}%
+    \advance\pgf@xa by \pgf@x%
+    \advance\pgf@ya by \pgf@y%
+    \pgf@sys@bp@correct{\pgf@x}%
+    \pgf@sys@bp@correct{\pgf@y}%
+    \pgf@sys@bp@correct{\pgf@xa}%
+    \pgf@sys@bp@correct{\pgf@ya}%
+    \pgfutil@tempdima=2\pgf@max%
+    \edef\@tempa{\noexpand\pgfutil@insertatbegincurrentpagefrombox{%
+      \special{pdf:bxobj @pgfshade\the\pgfsys@objnum\space
+        width \the\pgfutil@tempdima\space height \the\pgfutil@tempdima}%
+      \special{pdf:put @resources
+      <<
+        /Shading << /Sh << /ShadingType 3
+        /ColorSpace \pgf@shading@device\space
+        /Domain [\pgf@pdfparseddomain]
+        /Coords [\pgf@sys@tonumber{\pgf@xa}
+          \pgf@sys@tonumber{\pgf@ya}
+          \pgf@doma\space \pgf@sys@tonumber{\pgf@x}
+          \pgf@sys@tonumber{\pgf@y}
+          \pgf@domb]
+        /Function \pgf@pdfparsedfunction
+        /Extend [true false] >> >>
+      >>}%
+      \pgfsys@invoke{/Sh sh}%
+      \special{pdf:exobj}}}\@tempa% <<
+    \expandafter\xdef\csname @pgfshading#1!\endcsname{%
+      \hbox to\the\pgfutil@tempdima{\vbox to\the\pgfutil@tempdima{%
+        \vfil\special{pdf:uxobj @pgfshade\the\pgfsys@objnum}}\hfil}}% 
+    \expandafter\xdef\csname @pgfshading#1@model!\endcsname{%
+      \pgf@shading@model}%
+  }%
+  \global\advance\pgfsys@objnum\@ne%
+}
+\def\pgfsys@functionalshading#1#2#3#4{%
+  {%
+    \pgf@process{#2}%
+    \pgf@xa=\pgf@x%
+    \pgf@ya=\pgf@y%
+    \pgf@process{#3}%
+    \pgf@xb=\pgf@x%
+    \pgf@yb=\pgf@y%
+    \advance\pgf@x by-\pgf@xa%
+    \advance\pgf@y by-\pgf@ya%
+    \pgf@sys@bp@correct{\pgf@xa}%
+    \pgf@sys@bp@correct{\pgf@ya}%
+    \pgf@sys@bp@correct{\pgf@xb}%
+    \pgf@sys@bp@correct{\pgf@yb}%
+    \pgf@xc=-\pgf@xa%
+    \pgf@yc=-\pgf@ya%
+    % Now build the function
+    \edef\@tempa{\noexpand\pgfutil@insertatbegincurrentpagefrombox{%
+      \special{pdf:stream @pgfstream\the\pgfsys@objnum\space({#4})
+        <</FunctionType 4 /Domain [\pgf@sys@tonumber{\pgf@xa}\space
+          \pgf@sys@tonumber{\pgf@xb}\space
+          \pgf@sys@tonumber{\pgf@ya}\space
+          \pgf@sys@tonumber{\pgf@yb}]
+        /Range [\pgf@shading@functional@range]>>}}}\@tempa%
+    \edef\@tempa{\noexpand\pgfutil@insertatbegincurrentpagefrombox{%
+      \special{pdf:bxobj @pgfshade\the\pgfsys@objnum\space
+        width \the\pgf@x\space height \the\pgf@y}%
+      \special{pdf:put @resources <</Shading <</Sh <</ShadingType 1
+        /ColorSpace \pgf@shading@device\space
+        /Matrix [1 0 0 1 \pgf@sys@tonumber{\pgf@xc}\space
+          \pgf@sys@tonumber{\pgf@yc}]
+        /Domain [\pgf@sys@tonumber{\pgf@xa}\space
+          \pgf@sys@tonumber{\pgf@xb}\space
+          \pgf@sys@tonumber{\pgf@ya}\space
+          \pgf@sys@tonumber{\pgf@yb}]
+        /Function @pgfstream\the\pgfsys@objnum>> >> >>}%
+      \pgfsys@invoke{/Sh sh}%
+      \special{pdf:exobj}}}\@tempa% <<
+    \expandafter\xdef\csname @pgfshading#1!\endcsname{%
+      \leavevmode\hbox to\the\pgf@x{\vbox to\the\pgf@y{%
+        \vfil\special{pdf:uxobj @pgfshade\the\pgfsys@objnum}}\hfil}}% 
+    \expandafter\xdef\csname @pgfshading#1@model!\endcsname{%
+      \pgf@shading@model}%
+  }%
+  \global\advance\pgfsys@objnum\@ne%
+}
+%    \end{macrocode}
+%
+%    \begin{macrocode}
+%</dvipdfmx-driver>
+%    \end{macrocode}
+%
+% \end{implementation}
+%
+% \PrintChanges

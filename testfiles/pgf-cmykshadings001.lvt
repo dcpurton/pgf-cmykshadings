@@ -1,4 +1,5 @@
-\documentclass{article}
+\documentclass[a4paper]{article}
+\input{regression-test}
 \usepackage{ifluatex}
 \usepackage{ifxetex}
 \ifxetex
@@ -227,6 +228,8 @@
 }
 
 \begin{document}
+\START
+\showoutput
 
 \selectcolormodel{cmyk}
 

@@ -1100,8 +1100,9 @@
 \DeclareOption{cmyk}{%
   \pgfcmykshadingdefaulttrue
 }
+\changes{v1.1}{2018/10/18}{Fix type for rgb package option.}
 \DeclareOption{rgb}{%
-  \pgfcmykshadin@defaultfalse
+  \pgfcmykshadindefaultfalse
 }
 \ExecuteOptions{cmyk}
 \ProcessOptions\relax

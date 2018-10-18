@@ -1015,6 +1015,13 @@
       \pgfshadingmodelrgbfalse
       \pgfshadingmodelgraytrue
   \fi
+%    \end{macrocode}
+% \changes{v1.1}{2018/10/19}{Support dvisvgm driver}
+%    \begin{macrocode}
+  \edef\pgf@sys@driver@dvisvgm{pgfsys-dvisvgm.def}%
+  \ifx\pgfsysdriver\pgf@sys@driver@dvisvgm
+    \def\pgf@shading@model{rgb}%
+  \fi
 }
 %    \end{macrocode}
 %
@@ -1089,7 +1096,7 @@
   \edef\pgfsyscmykshadingsdriver{pgfsys-cmykshadings-#1}%
 }
 \pgfutilgetcmykshadingsdriver
-\input\pgfsyscmykshadingsdriver
+\pgfutil@InputIfFileExists{\pgfsyscmykshadingsdriver}{}{}
 %    \end{macrocode}
 %
 % \noindent Style options to use CMYK shadings by default or not when the
@@ -1101,9 +1108,7 @@
   \pgfcmykshadingdefaulttrue
 }
 %    \end{macrocode}
-%
-% \changes{v1.1}{2018/10/18}{Fix typo for rgb package option.}
-%
+% \changes{v1.1}{2018/10/18}{Fix typo for {\ttfamily rgb} option}
 %    \begin{macrocode}
 \DeclareOption{rgb}{%
   \pgfcmykshadingdefaultfalse
@@ -1583,7 +1588,7 @@
 %
 % \subsubsection{dvipdfm driver}
 %
-% \changes{v1.1}{2018/10/18}{Add dvipdfm driver}
+% \changes{v1.1}{2018/10/18}{Support dvipdfm driver}
 %
 %    \begin{macrocode}
 %<*dvipdfm-driver>

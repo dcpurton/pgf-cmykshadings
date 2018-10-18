@@ -80,13 +80,13 @@ pgf-cmykshadings.dtx, README.md, and the derived files
   - pgfsys-cmykshadgins-xetex.def
   - pgfsys-cmykshadings-luatex.def
   - pgfsys-cmykshadings-dvipdfmx.def
+  - pgfsys-cmykshadings-dvipdfm.def
   - pgf-cmykshadings.pdf
 
 
-Substantial parts of the code for this package are taken from the pgf
-package files pgfcoreshade.code.tex, pgfsys-pdftex.def,
-pgfsys-luatex.def, and pgfsys-dvipdfmx.def copyright (c) 2006 Till
-Tantau and then slightly modified to support CMYK and grayscale
+Substantial parts of the code for this package are taken from the pgf package
+file pgfcoreshade.code.tex along with the driver files pgfsys-*.def, copyright
+(c) 2006 Till Tantau and then slightly modified to support CMYK and grayscale
 shadings.
 ```
 

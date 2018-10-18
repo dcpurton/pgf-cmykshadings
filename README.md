@@ -50,26 +50,11 @@ Clone the git repository using:
 git clone https://github.com/dcpurton/pgf-cmykshadings.git
 ```
 
-Change to the `pgf-cmykshadings` directory, and then the package can be
-installed by running:
+Change to the `pgf-cmykshadings` directory, and then the package and
+documentation can be installed by running:
 
 ```
-l3build install
-```
-
-Documentation (`pgf-cmykshadings.pdf`) can be compiled by running:
-
-```
-l3build doc
-```
-
-To install the documentation, copy `pgf-cmykshadings.pdf` to
-`$TEXMFHOME/doc/latex/pgf-cmykshadings/`.
-
-You can find `$TEXMFHOME` by running:
-
-```
-kpsewhich -var-value=TEXMFHOME
+l3build install --full
 ```
 
 ## Licence

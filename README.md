@@ -28,8 +28,8 @@ tex pgf-cmykshadings.ins
 ```
 
 to generate `pgf-cmykshadigns.sty`, `pgfsys-cmykshadings-pdftex.def`,
-`pgfsys-cmykshadings-xetex.def`, `pgfsys-cmykshadings-luatex.def`, and
-`pgfsys-cmykshadings-dvipdfmx.def`.
+`pgfsys-cmykshadings-xetex.def`, `pgfsys-cmykshadings-luatex.def`,
+`pgfsys-cmykshadings-dvipdfmx.def`, and `pgfsys-cmykshadings-dvipdfm.def`.
 
 Copy these generated files to `$TEXMFHOME/tex/latex/pgf-cmykshadings/` and
 `pgf-cmykshadings.pdf` to `$TEXMFHOME/doc/latex/pgf-cmykshadings/`.
@@ -85,7 +85,7 @@ pgf-cmykshadings.dtx, README.md, and the derived files
 
 
 Substantial parts of the code for this package are taken from the pgf package
-file pgfcoreshade.code.tex along with the driver files pgfsys-*.def, copyright
+file pgfcoreshade.code.tex, along with the driver files pgfsys-*.def, copyright
 (c) 2006 Till Tantau and then slightly modified to support CMYK and grayscale
 shadings.
 ```

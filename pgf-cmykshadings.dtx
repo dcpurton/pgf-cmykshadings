@@ -1022,6 +1022,13 @@
   \ifx\pgfsysdriver\pgf@sys@driver@dvisvgm
     \def\pgf@shading@model{rgb}%
   \fi
+%    \end{macrocode}
+% \changes{v1.1}{2018/10/19}{Support tex4ht driver}
+%    \begin{macrocode}
+  \edef\pgf@sys@driver@texforht{pgfsys-tex4ht.def}%
+  \ifx\pgfsysdriver\pgf@sys@driver@texforht
+    \def\pgf@shading@model{rgb}%
+  \fi
 }
 %    \end{macrocode}
 %

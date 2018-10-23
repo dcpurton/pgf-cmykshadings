@@ -139,7 +139,7 @@
 % \begin{description}
 %   \item[\mdseries |cmyk|] (default) to use CMYK shadings when the \pkg{xcolor}
 %     package |natural| colour model is in use.
-%   \item[\mdseries |rgb|] to use the RGB shadings when the \pkg{xcolor} package
+%   \item[\mdseries |rgb|] to use RGB shadings when the \pkg{xcolor} package
 %     |natural| colour model is in use.
 % \end{description}
 %
@@ -990,7 +990,7 @@
     \ifpgfcmykshadingdefault
       \def\pgf@shading@functional@range{0 1 0 1 0 1 0 1}%
       \def\pgf@shading@device{/DeviceCMYK}%
-  \def\pgf@shading@ps@device{setcmykcolor}%
+      \def\pgf@shading@ps@device{setcmykcolor}%
       \def\pgf@shading@model{cmyk}%
       \pgfshadingmodelrgbfalse
       \pgfshadingmodelcmyktrue

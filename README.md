@@ -1,11 +1,10 @@
 # pgf-cmykshadings — Support for CMYK and grayscale shadings in PGF/TikZ
 
 The `pgf-cmykshadings` package provides support for CMYK and grayscale shadings
-for the `pgf` package. By default `pgf` only supports RGB shadings. Horizontal,
-vertical, radial, and functional shadings are supported for pdfLaTeX, LuaLaTeX,
-and XeLaTeX. `pgf-cmykshadings` attempts to produce shadings consistent with
-the currently selected `xcolor` colour model. The `rgb`, `cmyk`, and `gray`
-colour models from the `xcolor` package are supported.
+for the `pgf` package. By default `pgf` only supports RGB shadings.
+`pgf-cmykshadings` attempts to produce shadings consistent with the currently
+selected `xcolor` colour model. The `rgb`, `cmyk`, and `gray` colour models
+from the `xcolor` package are supported.
 
 ## Installation from TeXLive or MiKTeX
 
@@ -27,9 +26,8 @@ Change to the `pgf-cmykshadings` directory, then run:
 tex pgf-cmykshadings.ins
 ```
 
-to generate `pgf-cmykshadigns.sty`, `pgfsys-cmykshadings-pdftex.def`,
-`pgfsys-cmykshadings-xetex.def`, `pgfsys-cmykshadings-luatex.def`,
-`pgfsys-cmykshadings-dvipdfmx.def`, and `pgfsys-cmykshadings-dvipdfm.def`.
+to generate the style file (`pgf-cmykshadigns.sty`) and driver files
+(`pgfsys-cmykshadings-*.def`).
 
 Copy these generated files to `$TEXMFHOME/tex/latex/pgf-cmykshadings/` and
 `pgf-cmykshadings.pdf` to `$TEXMFHOME/doc/latex/pgf-cmykshadings/`.
@@ -81,6 +79,10 @@ pgf-cmykshadings.dtx, README.md, and the derived files
   - pgfsys-cmykshadings-luatex.def
   - pgfsys-cmykshadings-dvipdfmx.def
   - pgfsys-cmykshadings-dvipdfm.def
+  - pgfsys-cmykshadings-dvips.def
+  - pgfsys-cmykshadings-textures.def
+  - pgfsys-cmykshadings-vtex.def
+  - pgfsys-cmykshadings-common-postscript.def
   - pgf-cmykshadings.pdf
 
 

@@ -40,13 +40,16 @@ pgf-cmykshadings.dtx, README.md, and the derived files
   - pgfsys-cmykshadings-luatex.def
   - pgfsys-cmykshadings-dvipdfmx.def
   - pgfsys-cmykshadings-dvipdfm.def
+  - pgfsys-cmykshadings-dvips.def
+  - pgfsys-cmykshadings-textures.def
+  - pgfsys-cmykshadings-vtex.def
+  - pgfsys-cmykshadings-common-postscript.def
   - pgf-cmykshadings.pdf
 
 
-Substantial parts of the code for this package are taken from the pgf
-package files pgfcoreshade.code.tex, pgfsys-pdftex.def,
-pgfsys-luatex.def, and pgfsys-dvipdfmx.def copyright (c) 2006 Till
-Tantau and then slightly modified to support CMYK and grayscale
+Substantial parts of the code for this package are taken from the pgf package
+file pgfcoreshade.code.tex, along with the driver files pgfsys-*.def, copyright
+(c) 2006 Till Tantau and then slightly modified to support CMYK and grayscale
 shadings.
 
 \endpreamble
@@ -62,6 +65,10 @@ shadings.
   \file{pgfsys-cmykshadings-luatex.def}{\from{pgf-cmykshadings.dtx}{luatex-driver}}
   \file{pgfsys-cmykshadings-dvipdfmx.def}{\from{pgf-cmykshadings.dtx}{dvipdfmx-driver}}
   \file{pgfsys-cmykshadings-dvipdfm.def}{\from{pgf-cmykshadings.dtx}{dvipdfm-driver}}
+  \file{pgfsys-cmykshadings-dvips.def}{\from{pgf-cmykshadings.dtx}{dvips-driver}}
+  \file{pgfsys-cmykshadings-textures.def}{\from{pgf-cmykshadings.dtx}{textures-driver}}
+  \file{pgfsys-cmykshadings-vtex.def}{\from{pgf-cmykshadings.dtx}{vtex-driver}}
+  \file{pgfsys-cmykshadings-common-postscript.def}{\from{pgf-cmykshadings.dtx}{common-ps-driver}}
 }
 
 \endbatchfile

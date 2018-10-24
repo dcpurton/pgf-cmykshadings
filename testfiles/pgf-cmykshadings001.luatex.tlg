@@ -78,7 +78,7 @@ Completed box being shipped out [1]
 ....\glue(\rightskip) 0.0
 ...\glue(\parskip) 6.0 plus 2.0
 ...\glue(\lineskip) 1.0
-...\hbox(28.45274+0.0)x483.69687, glue set 356.56586fil, direction TLT
+...\hbox(28.45274+0.0)x483.69687, glue set 363.22586fil, direction TLT
 ....\localpar
 .....\localinterlinepenalty=0
 .....\localbrokenpenalty=0
@@ -86,8 +86,6 @@ Completed box being shipped out [1]
 .....\localrightbox=null
 ....\hbox(0.0+0.0)x0.0, direction TLT
 ....\box(28.45274+0.0)x56.9055
-....\glue(\spaceskip) 3.33 plus 1.665 minus 1.11
-....\glue(\spaceskip) 3.33 plus 1.665 minus 1.11
 ....\glue(\spaceskip) 3.33 plus 1.665 minus 1.11
 ....\glue(\spaceskip) 3.33 plus 1.665 minus 1.11
 ....\box(28.45274+0.0)x56.9055
@@ -1058,7 +1056,7 @@ c }
 ....\glue(\rightskip) 0.0
 ...\glue(\parskip) 6.0 plus 2.0
 ...\glue(\lineskip) 1.0
-...\hbox(28.45274+0.0)x483.69687, glue set 356.56586fil, direction TLT
+...\hbox(28.45274+0.0)x483.69687, glue set 363.22586fil, direction TLT
 ....\localpar
 .....\localinterlinepenalty=0
 .....\localbrokenpenalty=0
@@ -1066,8 +1064,6 @@ c }
 .....\localrightbox=null
 ....\hbox(0.0+0.0)x0.0, direction TLT
 ....\box(28.45274+0.0)x56.9055
-....\glue(\spaceskip) 3.33 plus 1.665 minus 1.11
-....\glue(\spaceskip) 3.33 plus 1.665 minus 1.11
 ....\glue(\spaceskip) 3.33 plus 1.665 minus 1.11
 ....\glue(\spaceskip) 3.33 plus 1.665 minus 1.11
 ....\box(28.45274+0.0)x56.9055
@@ -2069,7 +2065,7 @@ Completed box being shipped out [4]
 ....\glue(\rightskip) 0.0
 ...\glue(\parskip) 6.0 plus 2.0
 ...\glue(\lineskip) 1.0
-...\hbox(28.45274+0.0)x483.69687, glue set 356.56586fil, direction TLT
+...\hbox(28.45274+0.0)x483.69687, glue set 363.22586fil, direction TLT
 ....\localpar
 .....\localinterlinepenalty=0
 .....\localbrokenpenalty=0
@@ -2077,8 +2073,6 @@ Completed box being shipped out [4]
 .....\localrightbox=null
 ....\hbox(0.0+0.0)x0.0, direction TLT
 ....\box(28.45274+0.0)x56.9055
-....\glue(\spaceskip) 3.33 plus 1.665 minus 1.11
-....\glue(\spaceskip) 3.33 plus 1.665 minus 1.11
 ....\glue(\spaceskip) 3.33 plus 1.665 minus 1.11
 ....\glue(\spaceskip) 3.33 plus 1.665 minus 1.11
 ....\box(28.45274+0.0)x56.9055

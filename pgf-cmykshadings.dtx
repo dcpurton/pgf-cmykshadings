@@ -27,7 +27,7 @@
 %
 % \title{The \pkg{pgf-cmykshadings} package}
 % \author{David Purton\thanks{Email: \url{dcpurton@marshwiggle.net}}}
-% \date{2018/10/23 v1.1}
+% \date{2018/10/24 v1.1a}
 %
 % \maketitle
 %
@@ -561,7 +561,8 @@
 %
 %    \begin{macrocode}
 \ProvidesPackage{pgf-cmykshadings}%
-  [2018/10/23 CMYK shadings support for PGF (DCP)]
+  [2018/10/24
+   CMYK and grayscale shadings support for PGF (DCP)]
 %    \end{macrocode}
 %
 %    \begin{macrocode}
@@ -804,9 +805,12 @@
 \def\pgf@grabsemicolor;{%
   \edef\pgf@conv{\pgf@conv; }\pgf@convert}
 \def\pgf@gobblec c{\pgf@convert}
-\def\pgf@savecolor#1{
+%    \end{macrocode}
+%\changes{v1.1a}{2018/10/24}{Fix missing percent sign}
+%    \begin{macrocode}
+\def\pgf@savecolor#1{%
   \pgfutil@extractcolorspec{pgf@tempcol}{\pgf@tempcolor}%
-  \expandafter\pgfutil@convertcolorspec\pgf@tempcolor%
+  \expandafter\pgfutil@convertcolorspec\pgf@tempcolor
     {\pgf@shading@model}{\pgf@color}%
   \expandafter\pgf@convget@\expandafter{\pgf@color}{#1}%
 }
@@ -852,7 +856,7 @@
     \pgf@sys@tonumber{\pgf@xc}\space}%
   \expandafter\edef\csname\string#2black\endcsname{%
     \pgf@sys@tonumber{\pgf@xd}\space}%
-  \escapechar\c@pgf@counta%
+  \escapechar\c@pgf@counta
 }
 \def\pgfshading@cmyk#1,#2,#3,#4\relax{%
   \pgf@xa=#1pt%
@@ -871,13 +875,13 @@
   \pgfutil@colorlet{pgf@tempcol}{#1}%
   \pgfutil@extractcolorspec{pgf@tempcol}{\pgf@tempcolor}%
   \expandafter\pgfutil@convertcolorspec\pgf@tempcolor{gray}{\pgf@graycolor}%
-  \expandafter\pgfshading@gray\pgf@graycolor\relax%
+  \expandafter\pgfshading@gray\pgf@graycolor\relax
   \edef#2{\pgf@sys@tonumber{\pgf@xa}\space}%
-  \c@pgf@counta\escapechar%
-  \escapechar-1\relax%
+  \c@pgf@counta\escapechar
+  \escapechar-1\relax
   \expandafter\edef\csname\string#2gray\endcsname{%
     \pgf@sys@tonumber{\pgf@xa}\space}%
-  \escapechar\c@pgf@counta%
+  \escapechar\c@pgf@counta
 }
 \def\pgfshading@gray#1\relax{%
   \pgf@xa=#1pt%
@@ -902,7 +906,7 @@
     \pgf@declareradialshading{\pgf@declareradialshading[]}}
 \def\pgfdeclarefunctionalshading{%
   \pgf@setup@model
-  \pgfutil@ifnextchar[
+  \pgfutil@ifnextchar[%
     \pgf@declarefunctionalshading{\pgf@declarefunctionalshading[]}}
 %    \end{macrocode}
 %
@@ -919,7 +923,7 @@
   {%
     {%
       \pgf@setup@model
-      \pgfutil@globalcolorsfalse%
+      \pgfutil@globalcolorsfalse
       \def\pgf@shade@adds{}%
       \pgfutil@ifundefined{pgf@deps\pgf@shadingname}%
       {}%
@@ -931,7 +935,7 @@
               {}{\applycolormixins{\@temp}}%
             \pgfutil@extractcolorspec{\@temp}{\pgf@tempcolor}%
             \expandafter\pgfutil@ifundefined\expandafter{%
-              \pgf@shadingsavedmodel}
+              \pgf@shadingsavedmodel}%
               {\expandafter\pgfutil@convertcolorspec\pgf@tempcolor{%
                  \pgf@shading@model}{\pgf@color}}%
               {\expandafter\pgfutil@convertcolorspec\pgf@tempcolor{%
@@ -947,12 +951,12 @@
           \expandafter\def\expandafter\@temp\expandafter{%
             \csname pgf@func\pgf@shadingname\endcsname}%
           \edef\@args{{\pgf@basename\pgf@shade@adds}}%
-          \expandafter\expandafter\expandafter\def%
-          \expandafter\expandafter\expandafter\@@args%
+          \expandafter\expandafter\expandafter\def
+          \expandafter\expandafter\expandafter\@@args
           \expandafter\expandafter\expandafter{%
             \csname pgf@args\pgf@shadingname\endcsname}%
           \expandafter\expandafter\expandafter\@temp
-            \expandafter\@args\@@args%
+            \expandafter\@args\@@args
         }%
       }%
       {}%
@@ -1099,7 +1103,7 @@
 %
 %    \begin{macrocode}
 \def\pgfutilgetcmykshadingsdriver{%
-  \expandafter\pgfutil@getcmykshadingsdriver\pgfsysdriver[
+  \expandafter\pgfutil@getcmykshadingsdriver\pgfsysdriver[%
 }
 \def\pgfutil@getcmykshadingsdriver pgfsys-#1[{%
   \edef\pgfsyscmykshadingsdriver{pgfsys-cmykshadings-#1}%
@@ -1140,7 +1144,8 @@
 %
 %    \begin{macrocode}
 \ProvidesFile{pgfsys-cmykshadings-pdftex.def}%
-  [2018/10/17 CMYK shadings support for PGF pdftex driver (DCP)]
+  [2018/10/24
+   CMYK and grayscale shadings support for PGF pdftex driver (DCP)]
 %    \end{macrocode}
 %
 %    \begin{macrocode}
@@ -1190,11 +1195,11 @@
     \setbox\pgfutil@tempboxa=\hbox to2\pgf@max{%
       \vbox to2\pgf@max{\vfil\pgfsys@invoke{/Sh sh}}\hfil}%
     \pgf@process{#2}%
-    \pgf@xa=\pgf@x%
-    \pgf@ya=\pgf@y%
+    \pgf@xa=\pgf@x
+    \pgf@ya=\pgf@y
     \pgf@process{\pgfpoint{\pgf@max}{\pgf@max}}%
-    \advance\pgf@xa by \pgf@x%
-    \advance\pgf@ya by \pgf@y%
+    \advance\pgf@xa by \pgf@x
+    \advance\pgf@ya by \pgf@y
     \pgf@sys@bp@correct{\pgf@x}%
     \pgf@sys@bp@correct{\pgf@y}%
     \pgf@sys@bp@correct{\pgf@xa}%
@@ -1220,21 +1225,21 @@
 \def\pgfsys@functionalshading#1#2#3#4{%
   {%
     \pgf@process{#2}%
-    \pgf@xa=\pgf@x%
-    \pgf@ya=\pgf@y%
+    \pgf@xa=\pgf@x
+    \pgf@ya=\pgf@y
     \pgf@process{#3}%
-    \pgf@xb=\pgf@x%
-    \pgf@yb=\pgf@y%
-    \advance\pgf@x by-\pgf@xa%
-    \advance\pgf@y by-\pgf@ya%
+    \pgf@xb=\pgf@x
+    \pgf@yb=\pgf@y
+    \advance\pgf@x by-\pgf@xa
+    \advance\pgf@y by-\pgf@ya
     \setbox\pgfutil@tempboxa=\hbox to\pgf@x{%
       \vbox to\pgf@y{\vfil\pgfsys@invoke{/Sh sh}}\hfil}%
     \pgf@sys@bp@correct{\pgf@xa}%
     \pgf@sys@bp@correct{\pgf@ya}%
     \pgf@sys@bp@correct{\pgf@xb}%
     \pgf@sys@bp@correct{\pgf@yb}%
-    \pgf@xc=-\pgf@xa%
-    \pgf@yc=-\pgf@ya%
+    \pgf@xc=-\pgf@xa
+    \pgf@yc=-\pgf@ya
     % Now build the function
     \pdfobj
     stream
@@ -1283,7 +1288,8 @@
 %
 %    \begin{macrocode}
 \ProvidesFile{pgfsys-cmykshadings-xetex.def}%
-  [2018/10/17 CMYK shadings support for PGF xetex driver (DCP)]
+  [2018/10/24
+   CMYK and grayscale shadings support for PGF xetex driver (DCP)]
 %    \end{macrocode}
 %
 %    \begin{macrocode}
@@ -1302,7 +1308,8 @@
 %
 %    \begin{macrocode}
 \ProvidesFile{pgfsys-cmykshadings-luatex.def}%
-  [2018/10/17 CMYK shadings support for PGF luatex driver (DCP)]
+  [2018/10/24
+   CMYK and grayscale shadings support for PGF luatex driver (DCP)]
 %    \end{macrocode}
 %
 %    \begin{macrocode}
@@ -1352,11 +1359,11 @@
     \setbox\pgfutil@tempboxa=\hbox to2\pgf@max{%
       \vbox to2\pgf@max{\vfil\pgfsys@invoke{/Sh sh}}\hfil}%
     \pgf@process{#2}%
-    \pgf@xa=\pgf@x%
-    \pgf@ya=\pgf@y%
+    \pgf@xa=\pgf@x
+    \pgf@ya=\pgf@y
     \pgf@process{\pgfpoint{\pgf@max}{\pgf@max}}%
-    \advance\pgf@xa by \pgf@x%
-    \advance\pgf@ya by \pgf@y%
+    \advance\pgf@xa by \pgf@x
+    \advance\pgf@ya by \pgf@y
     \pgf@sys@bp@correct{\pgf@x}%
     \pgf@sys@bp@correct{\pgf@y}%
     \pgf@sys@bp@correct{\pgf@xa}%
@@ -1382,21 +1389,21 @@
 \def\pgfsys@functionalshading#1#2#3#4{%
   {%
     \pgf@process{#2}%
-    \pgf@xa=\pgf@x%
-    \pgf@ya=\pgf@y%
+    \pgf@xa=\pgf@x
+    \pgf@ya=\pgf@y
     \pgf@process{#3}%
-    \pgf@xb=\pgf@x%
-    \pgf@yb=\pgf@y%
-    \advance\pgf@x by-\pgf@xa%
-    \advance\pgf@y by-\pgf@ya%
+    \pgf@xb=\pgf@x
+    \pgf@yb=\pgf@y
+    \advance\pgf@x by-\pgf@xa
+    \advance\pgf@y by-\pgf@ya
     \setbox\pgfutil@tempboxa=\hbox to\pgf@x{%
       \vbox to\pgf@y{\vfil\pgfsys@invoke{/Sh sh}}\hfil}%
     \pgf@sys@bp@correct{\pgf@xa}%
     \pgf@sys@bp@correct{\pgf@ya}%
     \pgf@sys@bp@correct{\pgf@xb}%
     \pgf@sys@bp@correct{\pgf@yb}%
-    \pgf@xc=-\pgf@xa%
-    \pgf@yc=-\pgf@ya%
+    \pgf@xc=-\pgf@xa
+    \pgf@yc=-\pgf@ya
     % Now build the function
     \pdfextension obj
     stream
@@ -1445,7 +1452,8 @@
 %
 %    \begin{macrocode}
 \ProvidesFile{pgfsys-cmykshadings-dvipdfmx.def}%
-  [2018/10/17 CMYK shadings support for PGF dvipdfmx driver (DCP)]
+  [2018/10/24
+   CMYK and grayscale shadings support for PGF dvipdfmx driver (DCP)]
 %    \end{macrocode}
 %
 %    \begin{macrocode}
@@ -1501,22 +1509,22 @@
     \expandafter\xdef\csname @pgfshading#1@model!\endcsname{%
       \pgf@shading@model}%
   }%
-  \global\advance\pgfsys@objnum\@ne%
+  \global\advance\pgfsys@objnum\@ne
 }
 \def\pgfsys@radialshading#1#2#3{%
   {%
     \pgf@parsefunc{#3}%
     \pgf@process{#2}%
-    \pgf@xa=\pgf@x%
-    \pgf@ya=\pgf@y%
+    \pgf@xa=\pgf@x
+    \pgf@ya=\pgf@y
     \pgf@process{\pgfpoint{\pgf@max}{\pgf@max}}%
-    \advance\pgf@xa by \pgf@x%
-    \advance\pgf@ya by \pgf@y%
+    \advance\pgf@xa by \pgf@x
+    \advance\pgf@ya by \pgf@y
     \pgf@sys@bp@correct{\pgf@x}%
     \pgf@sys@bp@correct{\pgf@y}%
     \pgf@sys@bp@correct{\pgf@xa}%
     \pgf@sys@bp@correct{\pgf@ya}%
-    \pgfutil@tempdima=2\pgf@max%
+    \pgfutil@tempdima=2\pgf@max
     \edef\@tempa{\noexpand\pgfutil@insertatbegincurrentpagefrombox{%
       \special{pdf:bxobj @pgfshade\the\pgfsys@objnum\space
         width \the\pgfutil@tempdima\space height \the\pgfutil@tempdima}%
@@ -1541,24 +1549,24 @@
     \expandafter\xdef\csname @pgfshading#1@model!\endcsname{%
       \pgf@shading@model}%
   }%
-  \global\advance\pgfsys@objnum\@ne%
+  \global\advance\pgfsys@objnum\@ne
 }
 \def\pgfsys@functionalshading#1#2#3#4{%
   {%
     \pgf@process{#2}%
-    \pgf@xa=\pgf@x%
-    \pgf@ya=\pgf@y%
+    \pgf@xa=\pgf@x
+    \pgf@ya=\pgf@y
     \pgf@process{#3}%
-    \pgf@xb=\pgf@x%
-    \pgf@yb=\pgf@y%
+    \pgf@xb=\pgf@x
+    \pgf@yb=\pgf@y
     \advance\pgf@x by-\pgf@xa%
     \advance\pgf@y by-\pgf@ya%
     \pgf@sys@bp@correct{\pgf@xa}%
     \pgf@sys@bp@correct{\pgf@ya}%
     \pgf@sys@bp@correct{\pgf@xb}%
     \pgf@sys@bp@correct{\pgf@yb}%
-    \pgf@xc=-\pgf@xa%
-    \pgf@yc=-\pgf@ya%
+    \pgf@xc=-\pgf@xa
+    \pgf@yc=-\pgf@ya
     % Now build the function
     \edef\@tempa{\noexpand\pgfutil@insertatbegincurrentpagefrombox{%
       \special{pdf:stream @pgfstream\the\pgfsys@objnum\space({#4})
@@ -1587,7 +1595,7 @@
     \expandafter\xdef\csname @pgfshading#1@model!\endcsname{%
       \pgf@shading@model}%
   }%
-  \global\advance\pgfsys@objnum\@ne%
+  \global\advance\pgfsys@objnum\@ne
 }
 %    \end{macrocode}
 %
@@ -1605,7 +1613,8 @@
 %
 %    \begin{macrocode}
 \ProvidesFile{pgfsys-cmykshadings-dvipdfm.def}%
-  [2018/10/18 CMYK shadings support for PGF dvipdfm driver (DCP)]
+  [2018/10/24
+   CMYK and grayscale shadings support for PGF dvipdfm driver (DCP)]
 %    \end{macrocode}
 %
 %    \begin{macrocode}
@@ -1615,7 +1624,7 @@
     \pgf@process{\pgfpoint{\pgf@max}{#2}}%
     \edef\@temp{\noexpand\pgfutil@insertatbegincurrentpage{%
       \special{pdf: beginxobj @pgfshade#1 width \the\pgf@max\space
-        height \the\pgf@y}}}\@temp%
+        height \the\pgf@y}}}\@temp
     \edef\@temp{\noexpand\pgfutil@insertatbegincurrentpage{%
         \special{pdf: put @resources <<
       /Shading << /Sh << /ShadingType 2
@@ -1639,7 +1648,7 @@
     \pgf@process{\pgfpoint{\pgf@max}{#2}}%
     \edef\@temp{\noexpand\pgfutil@insertatbegincurrentpage{%
       \special{pdf: beginxobj @pgfshade#1 width \the\pgf@y\space
-        height \the\pgf@max\space}}}\@temp%
+        height \the\pgf@max\space}}}\@temp
     \edef\@temp{\noexpand\pgfutil@insertatbegincurrentpage{%
         \special{pdf: put @resources <<
       /Shading << /Sh << /ShadingType 2
@@ -1661,16 +1670,16 @@
   {%
     \pgf@parsefunc{#3}%
     \pgf@process{#2}%
-    \pgf@xa=\pgf@x%
-    \pgf@ya=\pgf@y%
+    \pgf@xa=\pgf@x
+    \pgf@ya=\pgf@y
     \pgf@process{\pgfpoint{\pgf@max}{\pgf@max}}%
-    \advance\pgf@xa by \pgf@x\relax%
-    \advance\pgf@ya by \pgf@y\relax%
+    \advance\pgf@xa by \pgf@x\relax
+    \advance\pgf@ya by \pgf@y\relax
     \pgf@sys@bp@correct{\pgf@x}%
     \pgf@sys@bp@correct{\pgf@y}%
     \pgf@sys@bp@correct{\pgf@xa}%
     \pgf@sys@bp@correct{\pgf@ya}%
-    \pgfutil@tempdima=2\pgf@max\relax%
+    \pgfutil@tempdima=2\pgf@max\relax
     \edef\@temp{\noexpand\pgfutil@insertatbegincurrentpage{%
       \special{pdf: beginxobj @pgfshade#1 width 
         \the\pgfutil@tempdima\space height \the\pgfutil@tempdima}}}\@temp%
@@ -1709,7 +1718,8 @@
 %
 %    \begin{macrocode}
 \ProvidesFile{pgfsys-cmykshadings-dvips.def}%
-  [2018/10/23 CMYK shadings support for PGF dvips driver (DCP)]
+  [2018/10/24
+   CMYK and grayscale shadings support for PGF dvips driver (DCP)]
 %    \end{macrocode}
 %
 %    \begin{macrocode}
@@ -1728,7 +1738,8 @@
 %
 %    \begin{macrocode}
 \ProvidesFile{pgfsys-cmykshadings-textures.def}%
-  [2018/10/23 CMYK shadings support for PGF textures driver (DCP)]
+  [2018/10/24
+   CMYK and grayscale shadings support for PGF textures driver (DCP)]
 %    \end{macrocode}
 %
 %    \begin{macrocode}
@@ -1747,7 +1758,8 @@
 %
 %    \begin{macrocode}
 \ProvidesFile{pgfsys-cmykshadings-vtex.def}%
-  [2018/10/23 CMYK shadings support for PGF vtex driver (DCP)]
+  [2018/10/24
+   CMYK and grayscale shadings support for PGF vtex driver (DCP)]
 %    \end{macrocode}
 %
 %    \begin{macrocode}
@@ -1766,7 +1778,8 @@
 %
 %    \begin{macrocode}
 \ProvidesFile{pgfsys-cmykshadings-common-postscript.def}%
-  [2018/10/23 CMYK shadings support for PGF PostScript driver (DCP)]
+  [2018/10/24
+   CMYK and grayscale shadings support for PGF PostScript driver (DCP)]
 %    \end{macrocode}
 %
 % \TeX\space shading macros.
@@ -1776,19 +1789,19 @@
   {%
     \pgf@parsefunc{#3}%
     \pgfmathsetlength\pgf@x{#2}%
-    \pgf@xa=\pgf@x%
+    \pgf@xa=\pgf@x
     \pgf@sys@bp@correct{\pgf@x}%
-    \pgf@y=\pgf@max%
+    \pgf@y=\pgf@max
     \pgf@sys@bp@correct{\pgf@y}%
     \expandafter\xdef\csname @pgfshading#1!\endcsname{\hbox to \the\pgf@max{%
-        \noexpand\vrule width0pt height\the\pgf@xa%
-        \noexpand\pgfsys@beginpurepicture%
+        \noexpand\vrule width0pt height\the\pgf@xa
+        \noexpand\pgfsys@beginpurepicture
           \noexpand\pgfsys@rect{0pt}{0pt}{\the\pgf@max}{\the\pgf@xa}%
-          \noexpand\pgfsys@clipnext%
-          \noexpand\pgfsys@discardpath%
+          \noexpand\pgfsys@clipnext
+          \noexpand\pgfsys@discardpath
           \noexpand\pgfsys@invoke{\pgf@domb\space \pgf@sys@tonumber{\pgf@x}
             pgfH\pgf@shading@model\space \pgf@psfuncs\space pop}%
-          \hss%
+          \hss
         \noexpand\pgfsys@endpurepicture}}%
     \expandafter\xdef\csname @pgfshading#1@model!\endcsname{%
       \pgf@shading@model}%
@@ -1798,19 +1811,19 @@
   {%
     \pgf@parsefunc{#3}%
     \pgfmathsetlength\pgf@x{#2}%
-    \pgf@xa=\pgf@x%
+    \pgf@xa=\pgf@x
     \pgf@sys@bp@correct{\pgf@x}%
-    \pgf@y=\pgf@max%
+    \pgf@y=\pgf@max
     \pgf@sys@bp@correct{\pgf@y}%
     \expandafter\xdef\csname @pgfshading#1!\endcsname{\hbox to\the\pgf@xa{%
-        \noexpand\vrule width0pt height\the\pgf@max%
-        \noexpand\pgfsys@beginpurepicture%
+        \noexpand\vrule width0pt height\the\pgf@max
+        \noexpand\pgfsys@beginpurepicture
           \noexpand\pgfsys@rect{0pt}{0pt}{\the\pgf@xa}{\the\pgf@max}%
-          \noexpand\pgfsys@clipnext%
-          \noexpand\pgfsys@discardpath%
+          \noexpand\pgfsys@clipnext
+          \noexpand\pgfsys@discardpath
           \noexpand\pgfsys@invoke{\pgf@domb\space \pgf@sys@tonumber{\pgf@x}
             pgfV\pgf@shading@model\space \pgf@psfuncs\space pop}%
-          \hss%
+          \hss
         \noexpand\pgfsys@endpurepicture}}%
     \expandafter\xdef\csname @pgfshading#1@model!\endcsname{%
       \pgf@shading@model}%
@@ -1822,20 +1835,20 @@
     \pgf@process{#2}%
     \pgf@sys@bp@correct{\pgf@x}%
     \pgf@sys@bp@correct{\pgf@y}%
-    \pgf@xa=2\pgf@max%
+    \pgf@xa=2\pgf@max
     \pgf@sys@bp@correct{\pgf@max}%
-    \advance\pgf@x by \pgf@max%
-    \advance\pgf@y by \pgf@max%
+    \advance\pgf@x by \pgf@max
+    \advance\pgf@y by \pgf@max
     \expandafter\xdef\csname @pgfshading#1!\endcsname{\hbox to \the\pgf@xa{%
-        \noexpand\vrule width0pt height\the\pgf@xa%
-        \noexpand\pgfsys@beginpurepicture%
+        \noexpand\vrule width0pt height\the\pgf@xa
+        \noexpand\pgfsys@beginpurepicture
           \noexpand\pgfsys@invoke{%
             \pgf@domb\space \pgf@sys@tonumber{\pgf@y}
             \pgf@sys@tonumber{\pgf@x}
             \pgf@sys@tonumber{\pgf@max} pgfR1\pgf@shading@model\space
             \pgf@psfuncs\space \pgf@firstcolor\space \pgf@doma\space
             pgfR2\pgf@shading@model}%
-          \hss%
+          \hss
         \noexpand\pgfsys@endpurepicture}}%
     \expandafter\xdef\csname @pgfshading#1@model!\endcsname{%
       \pgf@shading@model}%
@@ -1844,22 +1857,22 @@
 \def\pgfsys@functionalshading#1#2#3#4{%
   {%
     \pgf@process{#2}%
-    \pgf@xa=\pgf@x%
-    \pgf@ya=\pgf@y%
+    \pgf@xa=\pgf@x
+    \pgf@ya=\pgf@y
     \pgf@process{#3}%
-    \pgf@xb=\pgf@x%
-    \pgf@yb=\pgf@y%
-    \advance\pgf@x by-\pgf@xa%
-    \advance\pgf@y by-\pgf@ya%
+    \pgf@xb=\pgf@x
+    \pgf@yb=\pgf@y
+    \advance\pgf@x by-\pgf@xa
+    \advance\pgf@y by-\pgf@ya
     \pgf@sys@bp@correct{\pgf@xa}%
     \pgf@sys@bp@correct{\pgf@ya}%
     \pgf@sys@bp@correct{\pgf@xb}%
     \pgf@sys@bp@correct{\pgf@yb}%
-    \pgf@xc=-\pgf@xa%
-    \pgf@yc=-\pgf@ya%
+    \pgf@xc=-\pgf@xa
+    \pgf@yc=-\pgf@ya
     \expandafter\xdef\csname @pgfshading#1!\endcsname{%
       \hbox to\the\pgf@x{\vbox to\the\pgf@y{\vfil
-          \noexpand\pgfsys@beginpurepicture%
+          \noexpand\pgfsys@beginpurepicture
           \noexpand\pgfsys@invoke{%
             \pgf@sys@tonumber{\pgf@xc} \pgf@sys@tonumber{\pgf@yc} translate
             1.1 setlinewidth [] 0 setdash 0 setlinecap
@@ -1901,11 +1914,11 @@
 % Define CMYK PostScript® shding functions.
 %
 %    \begin{macrocode}
-  \pgf@sys@postscript@header{/pgfHcmyk{%
+  \pgf@sys@postscript@header{/pgfHcmyk{
       /pgfheight exch def 0.75 setlinewidth [] 0 setdash
       /pgfshade {pgfAcmyk} def /pgfdir { dup 0 moveto
         dup 6 index lineto } bind def} bind def}%
-  \pgf@sys@postscript@header{/pgfVcmyk{%
+  \pgf@sys@postscript@header{/pgfVcmyk{
       /pgfheight exch def 0.75 setlinewidth [] 0 setdash
       /pgfshade {pgfAcmyk} def /pgfdir { dup 0 exch moveto dup 6 index
         exch lineto } bind def} bind def}%
@@ -1927,7 +1940,7 @@
         5 -1 roll .5 sub % x += 0.5
       } repeat
       mark 19 1 roll cleartomark exch pop % leave only start x on stack
-    }bind def }
+    }bind def }%
   \pgf@sys@postscript@header{/pgfR1cmyk{
       newpath dup dup dup 0 360 arc clip newpath
       dup /pgfendx exch def
@@ -1940,7 +1953,7 @@
       /pgfdiffx pgfendx pgfstartx sub def
       /pgfdiffy pgfendy pgfstarty sub def
       dup /pgfdomb exch def
-    }bind def }
+    }bind def }%
   \pgf@sys@postscript@header{/pgfR2cmyk{
       newpath 0.5 add pgfcircx pgfcircy 3 2 roll 0 360 arc
       setcmykcolor fill pop}bind def }%
@@ -1970,17 +1983,17 @@
         /pgfcircy pgfcircy pgfystep add def
       } repeat
       mark 18 1 roll cleartomark exch pop % leave only start x on stack
-    }bind def}
+    }bind def}%
 %    \end{macrocode}
 %
 % Define grayscale PostScript® shding functions.
 %
 %    \begin{macrocode}
-  \pgf@sys@postscript@header{/pgfHgray{%
+  \pgf@sys@postscript@header{/pgfHgray{
       /pgfheight exch def 0.75 setlinewidth [] 0 setdash
       /pgfshade {pgfAgray} def /pgfdir { dup 0 moveto
         dup 3 index lineto } bind def} bind def}%
-  \pgf@sys@postscript@header{/pgfVgray{%
+  \pgf@sys@postscript@header{/pgfVgray{
       /pgfheight exch def 0.75 setlinewidth [] 0 setdash
       /pgfshade {pgfAgray} def /pgfdir { dup 0 exch moveto dup 3 index
         exch lineto } bind def} bind def}%
@@ -1996,7 +2009,7 @@
         exch .5 sub % x += 0.5
       } repeat
       mark 7 1 roll cleartomark exch pop % leave only start x on stack
-    }bind def }
+    }bind def }%
   \pgf@sys@postscript@header{/pgfR1gray{
       newpath dup dup dup 0 360 arc clip newpath
       dup /pgfendx exch def
@@ -2009,7 +2022,7 @@
       /pgfdiffx pgfendx pgfstartx sub def
       /pgfdiffy pgfendy pgfstarty sub def
       dup /pgfdomb exch def
-    }bind def }
+    }bind def }%
   \pgf@sys@postscript@header{/pgfR2gray{
       newpath 0.5 add pgfcircx pgfcircy 3 2 roll 0 360 arc
       setgray fill pop}bind def }%
@@ -2033,7 +2046,7 @@
         /pgfcircy pgfcircy pgfystep add def
       } repeat
       mark 6 1 roll cleartomark exch pop % leave only start x on stack
-    }bind def}
+    }bind def}%
 }
 %    \end{macrocode}
 %
